@@ -109,7 +109,7 @@ public class VaadinOSGiSessionManager {
 		this.httpService = service;
 	}
 
-	public void applicationRegistered(
+	public void bindApplicationFactory(
 			final ComponentFactory applicationFactory,
 			final Map<String, Object> properties) throws Exception {
 		this.applicationFactory = applicationFactory;
@@ -135,7 +135,7 @@ public class VaadinOSGiSessionManager {
 		return path;
 	}
 
-	public void applicationRemoved(ComponentFactory factory,
+	public void unbindApplicationFactory(ComponentFactory factory,
 			Map<String, Object> properties) {
 		String path = "/" + (String) properties.get("component.name"); //$NON-NLS-1$ //$NON-NLS-2$
 		System.out.println("Removing Vaadin context : " + path); //$NON-NLS-1$
@@ -174,7 +174,9 @@ public class VaadinOSGiSessionManager {
 	 */
 	protected void doUnregisterServlet(final IServletFactory servletFactory) {
 		Servlet servlet = servlets.remove(servletFactory);
-		servlet.destroy();
+		if(servlet != null){
+			servlet.destroy();
+		}
 		httpService.unregister(servletPathes.remove(servlet));
 	}
 

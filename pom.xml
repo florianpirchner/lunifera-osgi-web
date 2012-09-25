@@ -277,7 +277,9 @@
 		<module>org.lunifera.web.vaadin.bridge</module>
 		<module>org.lunifera.web.p2.repo.juno</module>
 		<module>org.lunifera.web.p2.target.juno</module>
-		<module>org.lunifera.web.vaadin.servlet.default</module>
+		<module>org.lunifera.web.vaadin.servlet</module>
+		<module>org.lunifera.web.vaadin.session</module>
+		<module>org.lunifera.web.example.uiprovider</module>
 	</modules>
 	<dependencies>
 		<dependency>

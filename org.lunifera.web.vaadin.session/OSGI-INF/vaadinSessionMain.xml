@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" deactivate="shutdown" factory="vaadin.session" immediate="false" name="org.lunifera.web.vaadin.session">
+   <implementation class="org.lunifera.web.vaadin.session.VaadinOSGiSession"/>
+   <reference bind="addUiInfoProvider" cardinality="0..n" interface="org.lunifera.web.vaadin.session.common.IUiInfoProvider" name="uiInfoProvider" policy="dynamic" unbind="removeUiInfoProvider"/>
+   <service>
+      <provide interface="org.osgi.service.component.ComponentFactory"/>
+   </service>
+</scr:component>

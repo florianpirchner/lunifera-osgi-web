@@ -16,12 +16,11 @@
  * 
  * Based on org.vaadin.osgi.VaadinOSGiServlet.
  */
-package org.lunifera.web.vaadin.servlet.defaul;
+package org.lunifera.web.vaadin.servlet;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -31,6 +30,7 @@ import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.component.ComponentInstance;
 
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinServletSession;
 
 /**
  * Information: This class was originally written by chris brind and copied to
@@ -39,7 +39,7 @@ import com.vaadin.server.VaadinServlet;
  * Used to create instances of applications that have been registered with the
  * container via a component factory.
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "deprecation" })
 public class VaadinOSGiServlet extends VaadinServlet {
 
 	private final ComponentFactory factory;
@@ -50,17 +50,8 @@ public class VaadinOSGiServlet extends VaadinServlet {
 		this.factory = factory;
 	}
 
-	@Override
-	protected Class<? extends VaadinSession> getApplicationClass()
-			throws ClassNotFoundException {
-		// not used as the component factory creates instances for us
-		// but has to return something or getSystemMessages causes a NPE
-		return VaadinSession.class;
-	}
-
-	@Override
-	protected Application getNewApplication(HttpServletRequest request)
-			throws ServletException {
+	protected VaadinServletSession doCreateVaadinSession(
+			HttpServletRequest request) {
 		final VaadinSession info = new VaadinSession(factory.newInstance(null),
 				request.getSession());
 
@@ -79,7 +70,8 @@ public class VaadinOSGiServlet extends VaadinServlet {
 
 				});
 		System.out.println("Ready: " + info); //$NON-NLS-1$
-		return (VaadinSession) info.instance.getInstance();
+		return (VaadinServletSession) info.instance.getInstance();
+
 	}
 
 	@Override
@@ -114,13 +106,12 @@ public class VaadinOSGiServlet extends VaadinServlet {
 			System.out.println("Disposing: " + this); //$NON-NLS-1$
 			VaadinSession app = (VaadinSession) instance.getInstance();
 			if (app != null) {
-				app.close();
+				app.dispose();
 			}
 
 			instance.dispose();
 
 			session.removeAttribute(VaadinOSGiServlet.class.getName());
-			session.removeAttribute(WebApplicationContext.class.getName());
 
 			sessions.remove(this);
 		}

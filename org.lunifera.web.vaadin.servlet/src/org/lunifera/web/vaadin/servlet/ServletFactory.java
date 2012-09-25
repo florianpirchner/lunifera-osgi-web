@@ -11,7 +11,7 @@
  * more info: http://redvoodo.org
  *    
  *******************************************************************************/
-package org.lunifera.web.vaadin.servlet.defaul;
+package org.lunifera.web.vaadin.servlet;
 
 import java.util.Dictionary;
 import java.util.Map;

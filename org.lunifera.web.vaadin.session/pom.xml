@@ -5,8 +5,6 @@
     <artifactId>org.lunifera.osgi.web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>org.lunifera.web.vaadin.servlet.default</groupId>
-  <artifactId>org.lunifera.web.vaadin.servlet.default</artifactId>
-  <name>Vaadin default servlet</name>
-  <description>Default servlet to start vaadinSession</description>
+  <artifactId>org.lunifera.web.vaadin.session</artifactId>
+  <packaging>eclipse-plugin</packaging>
 </project>

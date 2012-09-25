@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<component name='org.lunifera.web.vaadin.bridge.sessionManager' xmlns='http://www.osgi.org/xmlns/scr/v1.1.0' activate='start' deactivate='stop'>
+  <implementation class='org.lunifera.web.vaadin.bridge.VaadinOSGiSessionManager'/>
+  <property name='productionMode' value='false'/>
+  <reference bind="addServlet" cardinality="1..n" interface="org.lunifera.web.vaadin.bridge.common.IServletFactory" name="servletFactory" policy="dynamic" unbind="removeServlet"/>
+
+  <reference name='vaadinSession' interface='org.osgi.service.component.ComponentFactory' cardinality='0..n' bind='bindApplicationFactory' unbind='unbindApplicationFactory' policy='dynamic' target='(component.factory=vaadin.session)'/>  
+  <reference name='httpService' interface='org.osgi.service.http.HttpService' bind='bindHttpService'/>
+</component>
