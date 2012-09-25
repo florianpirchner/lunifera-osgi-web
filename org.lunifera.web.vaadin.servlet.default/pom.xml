@@ -1,0 +1,12 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.lunifera.osgi.web</groupId>
+    <artifactId>org.lunifera.osgi.web</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>org.lunifera.web.vaadin.servlet.default</groupId>
+  <artifactId>org.lunifera.web.vaadin.servlet.default</artifactId>
+  <name>Vaadin default servlet</name>
+  <description>Default servlet to start vaadinSession</description>
+</project>

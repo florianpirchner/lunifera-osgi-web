@@ -1,0 +1,289 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
+	<groupId>org.lunifera.osgi.web</groupId>
+	<artifactId>org.lunifera.osgi.web</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Lunifera :: OSGi Components for web : Parent POM</name>
+
+	<properties>
+		<next-release>0.0.2-SNAPSHOT</next-release>
+		<tycho-version>0.15.0</tycho-version>
+
+		<eclipse-p2>http://download.eclipse.org/releases/juno</eclipse-p2>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<orbit-p2>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-p2>
+		<m2e-buildhelper-p2>http://repository.tesla.io:8081/nexus/content/sites/m2e.extras/m2eclipse-buildhelper/0.15.0/N/0.15.0.201207090124/</m2e-buildhelper-p2>
+		<m2e-tycho-p2>http://repository.tesla.io:8081/nexus/content/sites/m2e.extras/m2eclipse-tycho/0.6.0/N/0.6.0.201207302152/</m2e-tycho-p2>
+	</properties>
+
+	<developers>
+		<developer>
+			<id>cvgaviao</id>
+			<name>Cristiano Gavião</name>
+			<email>cvgaviao@gmail.com</email>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<id>florianpirchner</id>
+			<name>Florian Pirchner</name>
+			<email>florian.pirchner@gmail.com</email>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>haglo</id>
+			<name>Hans-George Glöckler</name>
+			<email>hans-georg.gloeckler@uni-ulm.de</email>
+			<timezone>+2</timezone>
+		</developer>
+	</developers>
+
+	<profiles>
+		<profile>
+			<id>prepare-for-next-release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<defaultGoal>org.eclipse.tycho:tycho-versions-plugin:set-version</defaultGoal>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-versions-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<executions>
+							<execution>
+								<id>change-next-release</id>
+								<goals>
+									<goal>set-version</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<newVersion>${next-release}</newVersion>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>testAll</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<defaultGoal>verify</defaultGoal>
+			</build>
+			<modules>
+				<module>org.lunifera.web.vaadin.bridge</module>
+				<module>org.lunifera.web.p2.repo.juno</module>
+				<module>org.lunifera.web.p2.target.juno</module>
+			</modules>
+			<repositories>
+				<repository>
+					<id>lastest_lunifera_built_p2</id>
+					<url>file://${basedir}/../org.lunifera.web.p2.repo.juno/target/repository</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+		</profile>
+		
+		<profile>
+			<id>p2-juno</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<defaultGoal>verify</defaultGoal>
+			</build>
+			<modules>
+				<!-- exclusive for P2 -->
+
+				<!-- P2 features -->
+				<!-- end P2 features -->
+
+				<!-- P2 bundles -->
+				<module>org.lunifera.web.vaadin.bridge</module>
+				<module>org.lunifera.web.p2.repo.juno</module>
+				<module>org.lunifera.web.p2.target.juno</module>
+				<!-- P2 bundles -->
+			</modules>
+		</profile>
+	</profiles>
+
+
+	<repositories>
+		<repository>
+			<id>m2e-buildhelper</id>
+			<url>${m2e-buildhelper-p2}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>m2e-tycho</id>
+			<url>${m2e-tycho-p2}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>Orbit</id>
+			<url>${orbit-p2}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>Eclipse</id>
+			<url>${eclipse-p2}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+	</pluginRepositories>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<!-- enable tycho build -->
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-maven-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<extensions>true</extensions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<compilerVersion>1.6</compilerVersion>
+						<encoding>UTF-8</encoding>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>target-platform-configuration</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<resolver>p2</resolver>
+						<pomDependencies>consider</pomDependencies>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<includes>
+							<include>**/*Tests.java</include>
+						</includes>
+						<showEclipseLog>true</showEclipseLog>
+						<useUIHarness>false</useUIHarness>
+						<useUIThread>false</useUIThread>
+						<failIfNoTests>false</failIfNoTests>
+<!-- 						<appArgLine>-Dfile.encoding=UTF-8</appArgLine> -->
+						<argLine>-Dfile.encoding=UTF-8</argLine>
+						<!-- Kill test JVM if tests take more than 10 minutes (600 seconds) 
+							to finish -->
+						<forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.7</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<organization>
+		<name>Lunifera.org</name>
+		<url>www.lunifera.org</url>
+	</organization>
+	<modules>
+		<module>org.lunifera.web.vaadin.bridge</module>
+		<module>org.lunifera.web.p2.repo.juno</module>
+		<module>org.lunifera.web.p2.target.juno</module>
+		<module>org.lunifera.web.vaadin.servlet.default</module>
+	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-server</artifactId>
+			<version>7.0.0.beta1</version>
+		</dependency>
+	</dependencies>
+</project>

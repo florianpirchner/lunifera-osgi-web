@@ -1,0 +1,5 @@
+This target platform definition file lunifera-juno.target was created to facilitate the maintenance of Lunifera workspace and projects.
+
+It should be used only after you have built the p2 repository using:
+
+mvn clean verify -Pp2-juno. 
