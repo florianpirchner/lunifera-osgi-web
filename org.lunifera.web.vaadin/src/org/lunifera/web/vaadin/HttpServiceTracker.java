@@ -81,8 +81,10 @@ public class HttpServiceTracker extends ServiceTracker {
 		// register as a managed service so that alternative properties can
 		// be provided
 		Hashtable<String, String> properties = new Hashtable<String, String>();
-		properties.put(Constants.SERVICE_PID, VaadinApplicationTracker.PREFIX
-				+ "." + alias);
+		properties
+				.put(Constants.SERVICE_PID,
+						org.lunifera.web.vaadin.Constants.OSGI_COMP_FACTORY__VAADIN_SESSION
+								+ "." + alias);
 		context.registerService(ManagedService.class.getName(), config,
 				properties);
 

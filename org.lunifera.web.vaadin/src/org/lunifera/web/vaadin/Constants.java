@@ -15,7 +15,7 @@ public class Constants {
 	 * OSGi property component.factory for the vaadin session (vaadin
 	 * application in vaadin 7)
 	 */
-	public static final String OSGI_PROP__VAADIN_SESSION = "org.lunifera.web.vaadin.Session";
+	public static final String OSGI_COMP_FACTORY__VAADIN_SESSION = "org.lunifera.web.vaadin.Session";
 
 	/**
 	 * OSGi property component.factory for the vaadin UI (tab sheet). The
@@ -27,7 +27,7 @@ public class Constants {
 	 * factory=
 	 * "org.lunifera.web.vaadin.UI/org.lunifera.web.vaadin.example.Vaadin7DemoUI"
 	 */
-	public static final String OSGI_PROP__VAADIN_UI = "org.lunifera.web.vaadin.UI";
+	public static final String OSGI_COMP_FACTORY__VAADIN_UI = "org.lunifera.web.vaadin.UI";
 
 	/**
 	 * The prefix of the factory component name before the UI class name starts. <br>
@@ -35,6 +35,6 @@ public class Constants {
 	 * Factory name: org.lunifera.web.vaadin.UI/org.lunifera.web.vaadin.example.
 	 * Vaadin7DemoUI
 	 */
-	public static final String PREFIX__UI_CLASS = OSGI_PROP__VAADIN_UI + "/";
+	public static final String PREFIX__UI_CLASS = OSGI_COMP_FACTORY__VAADIN_UI + "/";
 
 }

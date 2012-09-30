@@ -36,7 +36,6 @@ public class OSGiVaadinSession extends VaadinServletSession {
 	private List<Pair> pendingFactories = new ArrayList<Pair>();
 
 	public OSGiVaadinSession() {
-		System.out.println("created");
 	}
 
 	public void activate(BundleContext context) throws InvalidSyntaxException {

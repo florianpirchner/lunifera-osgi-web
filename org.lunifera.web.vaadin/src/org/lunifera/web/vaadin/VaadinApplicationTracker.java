@@ -38,16 +38,14 @@ import org.osgi.util.tracker.ServiceTracker;
 @SuppressWarnings(value = { "rawtypes", "unchecked" })
 public class VaadinApplicationTracker extends ServiceTracker {
 
-	public static final String PREFIX = "org.vaadin.Session";
-
 	private final LogService logService;
 
 	private Map<ServiceReference, HttpServiceTracker> trackers = new IdentityHashMap<ServiceReference, HttpServiceTracker>();
 
 	public VaadinApplicationTracker(BundleContext ctx, LogService logService)
 			throws InvalidSyntaxException {
-		super(ctx, ctx.createFilter("(component.factory=" + PREFIX + "/*)"),
-				null);
+		super(ctx, ctx.createFilter("(component.factory="
+				+ Constants.OSGI_COMP_FACTORY__VAADIN_SESSION + "/*)"), null);
 		this.logService = logService;
 	}
 
@@ -58,7 +56,9 @@ public class VaadinApplicationTracker extends ServiceTracker {
 		if (o instanceof ComponentFactory) {
 			ComponentFactory factory = (ComponentFactory) o;
 			String name = (String) reference.getProperty("component.factory");
-			String alias = name.substring(PREFIX.length());
+			String alias = name
+					.substring(org.lunifera.web.vaadin.Constants.OSGI_COMP_FACTORY__VAADIN_SESSION
+							.length());
 
 			HttpServiceTracker tracker = new HttpServiceTracker(this.context,
 					factory, alias, logService);
