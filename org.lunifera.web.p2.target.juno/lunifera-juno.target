@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="lunifera-target-definition-juno" sequenceNumber="39">
+<target name="lunifera-target-definition-juno" sequenceNumber="42">
 <locations>
+<location path="${eclipse_home}" type="Profile"/>
+<location path="${project_loc}/local" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.apache.derby" version="10.5.1.1_v201108232300"/>
 <unit id="org.apache.derby.source" version="10.5.1.1_v201108232300"/>
@@ -10,11 +12,13 @@
 <unit id="org.slf4j.api" version="1.6.4.v20120130-2120"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository"/>
 </location>
-<location path="${project_loc}/local" type="Directory"/>
-<location path="${eclipse_home}" type="Profile"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="javax.servlet" version="3.0.0.v201112011016"/>
 <unit id="javax.servlet.source" version="3.0.0.v201112011016"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.json" version="1.0.0.v201011060100"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository"/>
 </location>
 </locations>
