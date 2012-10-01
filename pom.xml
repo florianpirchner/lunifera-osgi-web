@@ -90,6 +90,7 @@
 				<module>org.lunifera.web.vaadin.example</module>
 				<module>org.lunifera.web.feature.vaadin</module>
 				<module>org.lunifera.web.feature.p2.target</module>
+				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
 			</modules>
 			<repositories>
 				<repository>
@@ -126,6 +127,7 @@
 				<module>org.lunifera.web.vaadin</module>
 				<module>org.lunifera.web.feature.vaadin</module>
 				<module>org.lunifera.web.feature.p2.target</module>
+				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
 				<!-- P2 bundles -->
 			</modules>
 		</profile>
@@ -296,6 +298,10 @@
 		<module>org.lunifera.web.vaadin</module>
 		<module>org.lunifera.web.feature.vaadin</module>
 		<module>org.lunifera.web.feature.p2.target</module>
+		<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
+		<module>
+			org.lunifera.web.ecp.uimodel.presentation.vaadin.example
+		</module>
 	</modules>
 	<dependencies>
 		<dependency>
