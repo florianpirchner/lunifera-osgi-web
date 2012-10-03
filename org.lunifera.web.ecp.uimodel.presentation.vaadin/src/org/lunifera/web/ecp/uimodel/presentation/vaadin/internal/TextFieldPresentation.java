@@ -26,7 +26,7 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 
 	private final ModelAccess modelAccess;
 	private CssLayout componentBase;
-	private TextField component;
+	private TextField text;
 
 	/**
 	 * Constructor.
@@ -46,20 +46,23 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 		if (componentBase == null) {
 			componentBase = new CssLayout();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-
-			component = new TextField();
-			component.addStyleName(CSS_CLASS__CONTROL);
-			component.setSizeFull();
-			componentBase.addComponent(component);
-
 			if (modelAccess.isCssIdValid()) {
-				component.setId(modelAccess.getCssID());
+				componentBase.setId(modelAccess.getCssID());
 			} else {
-				component.setId(getEditpart().getId());
+				componentBase.setId(getEditpart().getId());
 			}
 
+			text = new TextField();
+			text.addStyleName(CSS_CLASS__CONTROL);
+			text.setSizeFull();
+			componentBase.addComponent(text);
+
 			if (modelAccess.isCssClassValid()) {
-				component.addStyleName(modelAccess.getCssClass());
+				text.addStyleName(modelAccess.getCssClass());
+			}
+
+			if (modelAccess.isLabelValid()) {
+				text.setCaption(modelAccess.getLabel());
 			}
 		}
 		return componentBase;
@@ -86,7 +89,7 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 				parent.removeComponent(componentBase);
 			}
 			componentBase = null;
-			component = null;
+			text = null;
 		}
 	}
 
@@ -142,6 +145,24 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 		 */
 		public boolean isCssIdValid() {
 			return getCssID() != null && !getCssID().equals("");
+		}
+
+		/**
+		 * Returns true, if the label is valid.
+		 * 
+		 * @return
+		 */
+		public boolean isLabelValid() {
+			return yText.getDatadescription() != null && yText.getDatadescription().getLabel() != null;
+		}
+
+		/**
+		 * Returns the label.
+		 * 
+		 * @return
+		 */
+		public String getLabel() {
+			return yText.getDatadescription().getLabel();
 		}
 	}
 }

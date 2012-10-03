@@ -11,7 +11,9 @@
  *******************************************************************************/
 package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
@@ -33,6 +35,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.GridLayout.Area;
 
 /**
  * This presenter is responsible to render a text field on the given layout.
@@ -107,25 +110,66 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 
 		// iterate all elements and build the child element
 		//
+		List<Cell> cells = new ArrayList<Cell>();
 		for (IUiEmbeddableEditpart editPart : getEditpart().getElements()) {
 			IWidgetPresentation<?> childPresentation = editPart.getPresentation();
 			YUiEmbeddable yChild = (YUiEmbeddable) childPresentation.getModel();
-			buildChild(childPresentation, yStyles.get(yChild));
+			Cell cell = addChild(childPresentation, yStyles.get(yChild));
+			cells.add(cell);
+		}
+
+		// Build a model of rows and columns.
+		// Each coordinate (row/column) has an assigned cell. If a cell is spanned,
+		// it will be assigned to many coordinates.
+		List<Row> rows = new ArrayList<Row>();
+		for (int i = 0; i < gridlayout.getRows(); i++) {
+			rows.add(new Row(i, gridlayout.getColumns()));
+		}
+		List<Column> columns = new ArrayList<Column>();
+		for (int i = 0; i < gridlayout.getColumns(); i++) {
+			columns.add(new Column(i, gridlayout.getRows()));
+		}
+
+		for (Cell cell : cells) {
+			for (int r = cell.area.getRow1(); r <= cell.area.getRow2(); r++) {
+				for (int c = cell.area.getColumn1(); c <= cell.area.getColumn2(); c++) {
+					Row row = rows.get(r);
+					row.addCell(c, cell);
+					Column col = columns.get(c);
+					col.addCell(r, cell);
+				}
+			}
+		}
+
+		boolean expandVerticalFound = false;
+		for (Row row : rows) {
+			if (row.isShouldExpandVertical()) {
+				expandVerticalFound = true;
+				gridlayout.setRowExpandRatio(row.getRowindex(), 1.0f);
+			}
+		}
+
+		boolean expandHorizontalFound = false;
+		for (Column col : columns) {
+			if (col.isShouldExpandHorizontal()) {
+				expandHorizontalFound = true;
+				gridlayout.setColumnExpandRatio(col.getColumnindex(), 1.0f);
+			}
 		}
 
 		// handle packaging - therefore a new row / column is added and set to expandRatio = 1.0f. This will cause the
 		// last row / column to grab excess space.
-		//
-		if (modelAccess.isPackHorizontal()) {
-			int packingHelperColumnIndex = gridlayout.getColumns();
-			gridlayout.setColumns(packingHelperColumnIndex + 1);
-			gridlayout.setColumnExpandRatio(packingHelperColumnIndex, 1.0f);
-		}
-
-		if (modelAccess.isPackVertical()) {
+		// If there is already a row / column that is expanded, we do not need to add a helper row
+		if (!expandVerticalFound && modelAccess.isPackContentVertical()) {
 			int packingHelperRowIndex = gridlayout.getRows();
 			gridlayout.setRows(packingHelperRowIndex + 1);
 			gridlayout.setRowExpandRatio(packingHelperRowIndex, 1.0f);
+		}
+
+		if (!expandHorizontalFound && modelAccess.isPackContentHorizontal()) {
+			int packingHelperColumnIndex = gridlayout.getColumns();
+			gridlayout.setColumns(packingHelperColumnIndex + 1);
+			gridlayout.setColumnExpandRatio(packingHelperColumnIndex, 1.0f);
 		}
 
 	}
@@ -137,56 +181,12 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 	 * @param yStyle
 	 * @return
 	 */
-	protected Component buildChild(IWidgetPresentation<?> presentation, YUiGridLayoutCellStyle yStyle) {
+	protected Cell addChild(IWidgetPresentation<?> presentation, YUiGridLayoutCellStyle yStyle) {
 
 		Component child = (Component) presentation.createWidget(gridlayout);
 
-		// applies the child to the parent
-		//
-		applyToParent(child, yStyle);
-
-		// calculate the required settings for packing
-		//
-		applyPacking(child);
-
-		if (yStyle != null) {
-			// applies the alignment settings
-			applyAlignment(child, yStyle.getAlignment());
-			applyGrapSpace(child, yStyle.isGrabHorizontalSpace(), yStyle.isGrabVerticalSpace());
-		} else {
-			applyAlignment(child, YUiAlignment.MIDDLE_CENTER);
-			applyGrapSpace(child, false, false);
-		}
-
-		return child;
-	}
-
-	/**
-	 * GrapSpace means, that the component increases its width / height up to 100% of available space.
-	 * 
-	 * @param child
-	 * @param grapHorizontal
-	 * @param grapVertical
-	 */
-	protected void applyGrapSpace(Component child, boolean grapHorizontal, boolean grapVertical) {
-		if (grapHorizontal) {
-			child.setWidth("100%");
-		}
-
-		if (grapVertical) {
-			child.setHeight("100%");
-		}
-	}
-
-	/**
-	 * Applies the child to its parent.
-	 * 
-	 * @param child
-	 * @param yStyle
-	 */
-	protected void applyToParent(Component child, YUiGridLayoutCellStyle yStyle) {
-
 		// calculate the spanning of the element
+		// and adds the child to the grid layout
 		//
 		int col1 = -1;
 		int row1 = -1;
@@ -202,9 +202,26 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 			}
 		}
 
+		// calculate and apply the alignment to be used
+		//
+		YUiAlignment yAlignment = yStyle != null && yStyle.getAlignment() != null ? yStyle.getAlignment() : null;
+		if (yAlignment == null) {
+			// use default
+			yAlignment = YUiAlignment.TOP_LEFT;
+
+			if (!modelAccess.isPackContentVertical()) {
+				// ensure that vertical alignment is FILL
+				yAlignment = mapToVerticalFill(yAlignment);
+			}
+			if (!modelAccess.isPackContentHorizontal()) {
+				// ensure that horizontal alignment is FILL
+				yAlignment = mapToHorizontalFill(yAlignment);
+			}
+		}
+
 		// add the element to the grid layout
 		//
-		if (col1 >= 0 && row1 >= 0 && col1 <= col2 && row1 <= row2) {
+		if (col1 >= 0 && row1 >= 0 && (col1 < col2 || row1 < row2)) {
 			gridlayout.setRows(row2 + 1);
 			gridlayout.addComponent(child, col1, row1, col2, row2);
 		} else if (col1 < 0 || row1 < 0) {
@@ -213,23 +230,11 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 			gridlayout.addComponent(child);
 			logger.warn("Invalid span: col1 {}, row1 {}, col2 {}, row2{}", new Object[] { col1, row1, col2, row2 });
 		}
-	}
+		applyAlignment(child, yAlignment);
 
-	/**
-	 * Packaging settings are applied to the component. Packaging means, that the components decrease their size to its
-	 * preferred value. If no packaging is done, the components are going to increase their size to 100% of available
-	 * space.
-	 * 
-	 * @param child
-	 */
-	protected void applyPacking(Component child) {
-		child.setSizeUndefined();
-		if (!modelAccess.isPackHorizontal()) {
-			child.setWidth("100%");
-		}
-		if (!modelAccess.isPackVertical()) {
-			child.setHeight("100%");
-		}
+		GridLayout.Area area = gridlayout.getComponentArea(child);
+
+		return new Cell(child, yAlignment, area);
 	}
 
 	/**
@@ -300,16 +305,100 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 				gridlayout.setComponentAlignment(child, Alignment.TOP_RIGHT);
 				child.setHeight("100%");
 				break;
+			default:
+				break;
 			}
 		}
+	}
+
+	/**
+	 * Maps the vertical part of the alignment to FILL.
+	 * 
+	 * @param yAlignment the alignment
+	 * @return alignment the mapped alignment
+	 */
+	// BEGIN SUPRESS CATCH EXCEPTION
+	protected YUiAlignment mapToVerticalFill(YUiAlignment yAlignment) {
+		// END SUPRESS CATCH EXCEPTION
+		if (yAlignment != null) {
+			switch (yAlignment) {
+			case BOTTOM_CENTER:
+			case MIDDLE_CENTER:
+			case TOP_CENTER:
+				return YUiAlignment.FILL_CENTER;
+			case BOTTOM_FILL:
+			case MIDDLE_FILL:
+			case TOP_FILL:
+				return YUiAlignment.FILL_FILL;
+			case BOTTOM_LEFT:
+			case MIDDLE_LEFT:
+			case TOP_LEFT:
+				return YUiAlignment.FILL_LEFT;
+			case BOTTOM_RIGHT:
+			case MIDDLE_RIGHT:
+			case TOP_RIGHT:
+				return YUiAlignment.FILL_RIGHT;
+			case FILL_FILL:
+			case FILL_LEFT:
+			case FILL_RIGHT:
+			case FILL_CENTER:
+				return YUiAlignment.FILL_FILL;
+			default:
+				break;
+			}
+		}
+		return YUiAlignment.FILL_FILL;
+	}
+
+	/**
+	 * Maps the horizontal part of the alignment to FILL.
+	 * 
+	 * @param yAlignment the alignment
+	 * @return alignment the mapped alignment
+	 */
+	// BEGIN SUPRESS CATCH EXCEPTION
+	protected YUiAlignment mapToHorizontalFill(YUiAlignment yAlignment) {
+		// END SUPRESS CATCH EXCEPTION
+		if (yAlignment != null) {
+			switch (yAlignment) {
+			case BOTTOM_CENTER:
+			case BOTTOM_FILL:
+			case BOTTOM_LEFT:
+			case BOTTOM_RIGHT:
+				return YUiAlignment.BOTTOM_FILL;
+			case MIDDLE_CENTER:
+			case MIDDLE_FILL:
+			case MIDDLE_LEFT:
+			case MIDDLE_RIGHT:
+				return YUiAlignment.MIDDLE_FILL;
+			case TOP_CENTER:
+			case TOP_FILL:
+			case TOP_LEFT:
+			case TOP_RIGHT:
+				return YUiAlignment.TOP_FILL;
+			case FILL_FILL:
+			case FILL_LEFT:
+			case FILL_RIGHT:
+			case FILL_CENTER:
+				return YUiAlignment.FILL_FILL;
+			default:
+				break;
+			}
+		}
+		return YUiAlignment.FILL_FILL;
 	}
 
 	@Override
 	public ComponentContainer createWidget(Object parent) {
 		if (componentBase == null) {
 			componentBase = new CssLayout();
-			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
 			componentBase.setSizeFull();
+			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
+			if (modelAccess.isCssIdValid()) {
+				componentBase.setId(modelAccess.getCssID());
+			} else {
+				componentBase.setId(getEditpart().getId());
+			}
 
 			gridlayout = new GridLayout(modelAccess.getColumns(), 1);
 			gridlayout.setSizeFull();
@@ -326,37 +415,16 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 				gridlayout.setSpacing(true);
 			}
 
-			if (modelAccess.isCssIdValid()) {
-				gridlayout.setId(modelAccess.getCssID());
-			} else {
-				gridlayout.setId(getEditpart().getId());
-			}
-
 			if (modelAccess.isCssClassValid()) {
 				gridlayout.addStyleName(modelAccess.getCssClass());
 			} else {
 				gridlayout.addStyleName(CSS_CLASS__CONTROL);
 			}
 
-			// load presentations once
-			loadChildPresentations();
 			renderChildren(false);
 		}
 
 		return componentBase;
-	}
-
-	/**
-	 * Loads all child presentations from the edit part into the internal cache.
-	 */
-	protected void loadChildPresentations() {
-		for (IUiEmbeddableEditpart editPart : getEditpart().getElements()) {
-			IWidgetPresentation<?> presentation = editPart.getPresentation();
-			if (!contains(presentation)) {
-				// will be rendered automatically after add
-				super.add(presentation);
-			}
-		}
 	}
 
 	@Override
@@ -491,18 +559,182 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 
 		/**
 		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isPackHorizontal()
+		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isPackContentHorizontal()
 		 */
-		public boolean isPackHorizontal() {
-			return yLayout.isPackHorizontal();
+		public boolean isPackContentHorizontal() {
+			return yLayout.isPackContentHorizontal();
 		}
 
 		/**
 		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isPackVertical()
+		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isPackContentVertical()
 		 */
-		public boolean isPackVertical() {
-			return yLayout.isPackVertical();
+		public boolean isPackContentVertical() {
+			return yLayout.isPackContentVertical();
 		}
+	}
+
+	private static class Row {
+		private int rowindex;
+		private List<Cell> cells;
+		private boolean shouldExpandVertical;
+
+		private Row(int rowindex, int columns) {
+			this.rowindex = rowindex;
+			cells = new ArrayList<Cell>(columns);
+		}
+
+		public void addCell(int column, Cell cell) {
+			cells.add(column, cell);
+
+			YUiAlignment alignment = cell.getAlignment();
+			// if not already sure, that it should expand
+			// try to find out
+			if (!shouldExpandVertical) {
+				// If the cell should FILL-vertical, then we test if the cell is spanned.
+				// --> If not spanned, then "shouldExpandVertical" is true.
+				// --> Otherwise we test, if the cell is the most bottom cell.
+				// ----> If not most bottom, then no span.
+				// ----> Otherwise "shouldExpandVertical" is true.
+				switch (alignment) {
+				case FILL_LEFT:
+				case FILL_CENTER:
+				case FILL_RIGHT:
+				case FILL_FILL:
+					if (!cell.isSpanned()) {
+						// if the cell is not spanned, then "shouldExpandHorizontal" is true
+						shouldExpandVertical = true;
+					} else {
+						if (cell.getArea().getRow2() == rowindex) {
+							// if the cell is the most right one, then "shouldExpandHorizontal" is true
+							shouldExpandVertical = true;
+						}
+					}
+					break;
+				default:
+					// nothing to do
+					break;
+				}
+			}
+		}
+
+		/**
+		 * @return the rowindex
+		 */
+		protected int getRowindex() {
+			return rowindex;
+		}
+
+		/**
+		 * @return the shouldExpandVertical
+		 */
+		protected boolean isShouldExpandVertical() {
+			return shouldExpandVertical;
+		}
+
+	}
+
+	private static class Column {
+		private final int columnindex;
+		private List<Cell> cells;
+		private boolean shouldExpandHorizontal;
+
+		private Column(int columnindex, int rows) {
+			this.columnindex = columnindex;
+			cells = new ArrayList<Cell>(rows);
+		}
+
+		public void addCell(int row, Cell cell) {
+			cells.add(row, cell);
+
+			YUiAlignment alignment = cell.getAlignment();
+			// if not already sure, that it should expand
+			// try to find out
+			if (!shouldExpandHorizontal) {
+				// If the cell should FILL-horizontal, then we test if the cell is spanned.
+				// --> If not spanned, then "shouldExpandHorizontal" is true.
+				// --> Otherwise we test, if the cell is the most right cell.
+				// ----> If not most right, then no span.
+				// ----> Otherwise "shouldExpandHorizontal" is true.
+				switch (alignment) {
+				case BOTTOM_FILL:
+				case MIDDLE_FILL:
+				case TOP_FILL:
+				case FILL_FILL:
+					if (!cell.isSpanned()) {
+						// if the cell is not spanned, then "shouldExpandHorizontal" is true
+						shouldExpandHorizontal = true;
+					} else {
+						if (cell.getArea().getColumn2() == cells.size() - 1) {
+							// if the cell is the most right one, then "shouldExpandHorizontal" is true
+							shouldExpandHorizontal = true;
+						}
+					}
+					break;
+				default:
+					// nothing to do
+					break;
+				}
+			}
+		}
+
+		/**
+		 * @return the columnindex
+		 */
+		protected int getColumnindex() {
+			return columnindex;
+		}
+
+		/**
+		 * @return the shouldExpandHorizontal
+		 */
+		protected boolean isShouldExpandHorizontal() {
+			return shouldExpandHorizontal;
+		}
+
+	}
+
+	public static class Cell {
+		private final Component component;
+		private final YUiAlignment alignment;
+		private final Area area;
+
+		public Cell(Component component, YUiAlignment alignment, GridLayout.Area area) {
+			super();
+			this.component = component;
+			this.alignment = alignment;
+			this.area = area;
+		}
+
+		/**
+		 * @return the component
+		 */
+		protected Component getComponent() {
+			return component;
+		}
+
+		/**
+		 * @return the alignment
+		 */
+		protected YUiAlignment getAlignment() {
+			return alignment;
+		}
+
+		/**
+		 * @return the area
+		 */
+		protected Area getArea() {
+			return area;
+		}
+
+		/**
+		 * Returns true, if the cell is spanned.
+		 * 
+		 * @return
+		 */
+		public boolean isSpanned() {
+			return area.getRow1() != area.getRow2() || area.getColumn1() != area.getColumn2();
+		}
+
 	}
 }
