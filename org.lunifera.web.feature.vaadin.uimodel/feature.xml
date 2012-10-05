@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.lunifera.web.feature.vaadin.uimodel"
+      label="%featureName"
+      version="0.0.1.qualifier"
+      provider-name="%providerName">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="com.vaadin.shared"/>
+      <import plugin="com.vaadin.themes"/>
+      <import plugin="com.vaadin.vaadin-client"/>
+      <import plugin="com.vaadin.vaadin-server"/>
+      <import plugin="org.json"/>
+      <import plugin="org.jsoup"/>
+   </requires>
+
+   <plugin
+         id="org.lunifera.web.ecp.uimodel.presentation.vaadin"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.emf.ecp.ui.model.core.uimodel"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

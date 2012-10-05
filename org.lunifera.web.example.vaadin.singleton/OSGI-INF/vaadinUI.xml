@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" factory="org.lunifera.web.vaadin.UI/org.lunifera.web.example.vaadin.singleton.SingletonUI" name="org.lunifera.web.example.vaadin.singleton.ui">
+   <implementation class="org.lunifera.web.example.vaadin.singleton.SingletonUI"/>
+</scr:component>

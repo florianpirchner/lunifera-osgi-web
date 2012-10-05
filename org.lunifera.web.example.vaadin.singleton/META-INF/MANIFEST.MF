@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Example
-Bundle-SymbolicName: org.lunifera.web.ecp.uimodel.presentation.vaadin.example
+Bundle-Name: Singleton
+Bundle-SymbolicName: org.lunifera.web.example.vaadin.singleton
 Bundle-Version: 0.0.1.qualifier
 Require-Bundle: org.lunifera.web.ecp.uimodel.presentation.vaadin,
  org.json;bundle-version="1.0.0",
