@@ -1,0 +1,6 @@
+-- org.lunifera.web.local.p2helper.updatesite
+		Is used to create a local P2 repo containing bundles like atmosphere (patched), vaadin, redVoodo, lunifera,...
+		
+-- This repo then is used as a local repo in the maven build
+
+-- org.lunifera.web.feature.target.platform contains bundles used in the target platform
