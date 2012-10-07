@@ -1,0 +1,2 @@
+# Module org.lunifera.web.example.vaadin.widgetset.widgetset.ExampleWidgetset
+# RPC service class, partial path of RPC policy file

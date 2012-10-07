@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Fragment
+Bundle-SymbolicName: org.lunifera.web.example.vaadin.servlet.ozonelayer.fragment
+Bundle-Version: 0.0.1.qualifier
+Fragment-Host: org.redvoodo.osgi.servlet.ozonelayer;bundle-version="0.9.8"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

@@ -4,11 +4,9 @@ Bundle-Name: Singleton
 Bundle-SymbolicName: org.lunifera.web.example.vaadin.singleton
 Bundle-Version: 0.0.1.qualifier
 Require-Bundle: org.lunifera.web.ecp.uimodel.presentation.vaadin,
- org.json;bundle-version="1.0.0",
- org.jsoup;bundle-version="1.6.3",
- org.lunifera.web.vaadin;bundle-version="0.0.1"
+ com.vaadin;bundle-version="6.7.9"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.osgi.service.component;version="1.2.0",
  org.slf4j;version="1.6.4"
-Service-Component: OSGI-INF/vaadinSession.xml, OSGI-INF/vaadinUI.xml
+Service-Component: OSGI-INF/vaadinApplication.xml

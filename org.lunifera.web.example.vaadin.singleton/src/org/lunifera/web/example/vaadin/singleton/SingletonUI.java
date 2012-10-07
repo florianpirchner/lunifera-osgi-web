@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.lunifera.web.example.vaadin.singleton;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,17 +27,15 @@ import org.lunifera.web.ecp.uimodel.presentation.vaadin.VaadinRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.server.VaadinRequest;
+import com.vaadin.Application;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Window;
 
 /**
  * Specify the class name after the factory name.
  */
-@Theme(Reindeer.THEME_NAME)
-public class SingletonUI extends UI implements UI.CleanupListener, IUiAccess {
+public class SingletonUI extends Application implements IUiAccess {
 
 	private static final Logger logger = LoggerFactory.getLogger(SingletonUI.class);
 
@@ -46,7 +45,7 @@ public class SingletonUI extends UI implements UI.CleanupListener, IUiAccess {
 
 	private CssLayout mainLayout;
 
-	private static Set<IUiAccess> uiaccesses = new HashSet<IUiAccess>();
+	private static Set<IUiAccess> uiaccesses = Collections.synchronizedSet(new HashSet<IUiAccess>());
 
 	/**
 	 * @return the iNSTANCES
@@ -56,10 +55,17 @@ public class SingletonUI extends UI implements UI.CleanupListener, IUiAccess {
 	}
 
 	@Override
-	public void init(VaadinRequest request) {
+	public void init() {
+		Window main = new Window();
+		main.setSizeFull();
+		setMainWindow(main);
 		mainLayout = new CssLayout();
 		mainLayout.setSizeFull();
-		setContent(mainLayout);
+		main.setContent(mainLayout);
+
+		Label label = new Label();
+		label.setValue("huhu");
+		mainLayout.addComponent(label);
 
 		// put the instances into the cache
 		uiaccesses.add(this);
@@ -100,7 +106,7 @@ public class SingletonUI extends UI implements UI.CleanupListener, IUiAccess {
 	}
 
 	@Override
-	public void cleanup(CleanupEvent event) {
+	public void close() {
 		uiaccesses.remove(this);
 	}
 

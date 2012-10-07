@@ -23,8 +23,8 @@
 		<orbit-p2>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-p2>
 		<m2e-buildhelper-p2>http://repository.tesla.io:8081/nexus/content/sites/m2e.extras/m2eclipse-buildhelper/0.15.0/N/0.15.0.201207090124/</m2e-buildhelper-p2>
 		<m2e-tycho-p2>http://repository.tesla.io:8081/nexus/content/sites/m2e.extras/m2eclipse-tycho/0.6.0/N/0.6.0.201207302152/</m2e-tycho-p2>
-		<local-vaadin-patch>file:${project.basedir}/../org.lunifera.web.p2.target.juno/local/p2</local-vaadin-patch>
-		<local-ecp-project>file:${project.basedir}/../org.lunifera.web.p2.target.juno/local/p2_ecpuimodel</local-ecp-project>
+		<local-ecp-project>file:${project.basedir}/../org.lunifera.web.p2.target.juno.vaadin6/local/p2_ecpuimodel</local-ecp-project>
+		<local-deps>file:${project.basedir}/../org.lunifera.web.local.p2helper.updatesite</local-deps>
 	</properties>
 
 	<developers>
@@ -50,65 +50,6 @@
 
 	<profiles>
 		<profile>
-			<id>prepare-for-next-release</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<defaultGoal>org.eclipse.tycho:tycho-versions-plugin:set-version</defaultGoal>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-versions-plugin</artifactId>
-						<version>${tycho-version}</version>
-						<executions>
-							<execution>
-								<id>change-next-release</id>
-								<goals>
-									<goal>set-version</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<newVersion>${next-release}</newVersion>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>testAll</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<defaultGoal>verify</defaultGoal>
-			</build>
-			<modules>
-				<module>org.lunifera.web.p2.repo.juno</module>
-				<module>org.lunifera.web.p2.target.juno</module>
-				<module>org.lunifera.web.vaadin</module>
-				<module>org.lunifera.web.vaadin.example</module>
-				<module>org.lunifera.web.feature.vaadin</module>
-				<module>org.lunifera.web.feature.p2.target</module>
-				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
-			</modules>
-			<repositories>
-				<repository>
-					<id>lastest_lunifera_built_p2</id>
-					<url>file://${basedir}/../org.lunifera.web.p2.repo.juno/target/repository</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-					<layout>p2</layout>
-				</repository>
-			</repositories>
-		</profile>
-
-		<profile>
 			<id>p2-juno</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -124,11 +65,13 @@
 
 				<!-- P2 bundles -->
 				<module>org.lunifera.web.p2.repo.juno</module>
-				<module>org.lunifera.web.p2.target.juno</module>
-				<module>org.lunifera.web.vaadin</module>
 				<module>org.lunifera.web.feature.vaadin</module>
-				<module>org.lunifera.web.feature.p2.target</module>
 				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
+				<module>org.lunifera.web.example.vaadin.servlet.ozonelayer.fragment</module>
+				<module>org.lunifera.web.example.vaadin.widgetset.fragment</module>
+				<module>org.lunifera.web.p2.target.juno.vaadin6</module>
+				<module>org.lunifera.web.feature.ecp.uimodel</module>
+				<module>org.lunifera.web.feature.ecp.uimodel.swt</module>
 				<!-- P2 bundles -->
 			</modules>
 		</profile>
@@ -136,8 +79,8 @@
 
 	<repositories>
 		<repository>
-			<id>local-vaadin-patch</id>
-			<url>${local-vaadin-patch}</url>
+			<id>local-deps</id>
+			<url>${local-deps}</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -306,16 +249,14 @@
 	</organization>
 	<modules>
 		<module>org.lunifera.web.p2.repo.juno</module>
-		<module>org.lunifera.web.p2.target.juno</module>
-		<module>org.lunifera.web.vaadin</module>
 		<module>org.lunifera.web.feature.vaadin</module>
-		<module>org.lunifera.web.feature.p2.target</module>
 		<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
-		<module>
-			org.lunifera.web.ecp.uimodel.presentation.vaadin.example
-		</module>
 		<module>org.lunifera.web.example.vaadin.singleton</module>
-		<module>org.lunifera.web.feature.vaadin.uimodel</module>
+		<module>org.lunifera.web.example.vaadin.servlet.ozonelayer.fragment</module>
+		<module>org.lunifera.web.example.vaadin.widgetset.fragment</module>
+		<module>org.lunifera.web.p2.target.juno.vaadin6</module>
+		<module>org.lunifera.web.feature.ecp.uimodel</module>
+		<module>org.lunifera.web.feature.ecp.uimodel.swt</module>
 	</modules>
 	<dependencies>
 		<dependency>

@@ -113,11 +113,11 @@ public class ViewPresentation extends AbstractDisposable implements IViewPresent
 			component.addStyleName(IConstants.CSS_CLASS__CONTROL);
 			componentBase.addComponent(component);
 
-			if (modelAccess.isCssIdValid()) {
-				component.setId(modelAccess.getCssID());
-			} else {
-				component.setId(editpart.getId());
-			}
+			// if (modelAccess.isCssIdValid()) {
+			// component.setId(modelAccess.getCssID());
+			// } else {
+			// component.setId(editpart.getId());
+			// }
 
 			if (modelAccess.isCssClassValid()) {
 				component.addStyleName(modelAccess.getCssClass());

@@ -46,11 +46,11 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 		if (componentBase == null) {
 			componentBase = new CssLayout();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-			if (modelAccess.isCssIdValid()) {
-				componentBase.setId(modelAccess.getCssID());
-			} else {
-				componentBase.setId(getEditpart().getId());
-			}
+//			if (modelAccess.isCssIdValid()) {
+//				componentBase.setId(modelAccess.getCssID());
+//			} else {
+//				componentBase.setId(getEditpart().getId());
+//			}
 
 			text = new TextField();
 			text.addStyleName(CSS_CLASS__CONTROL);

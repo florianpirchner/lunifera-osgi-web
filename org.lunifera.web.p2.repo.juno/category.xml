@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <feature url="features/org.lunifera.web.feature.ecp.uimodel_0.0.1.qualifier.jar" id="org.lunifera.web.feature.ecp.uimodel" version="0.0.1.qualifier">
+      <category name="vaadin-features"/>
+   </feature>
+   <feature url="features/org.lunifera.web.feature.ecp.uimodel.swt_0.0.1.qualifier.jar" id="org.lunifera.web.feature.ecp.uimodel.swt" version="0.0.1.qualifier">
+      <category name="vaadin-features"/>
+   </feature>
    <feature url="features/org.lunifera.web.feature.vaadin_0.0.1.qualifier.jar" id="org.lunifera.web.feature.vaadin" version="0.0.1.qualifier">
-      <category name="lunifera-web-features"/>
+      <category name="vaadin-features"/>
    </feature>
-   <feature url="features/org.lunifera.web.feature.p2.target_0.0.1.qualifier.jar" id="org.lunifera.web.feature.p2.target" version="0.0.1.qualifier">
-      <category name="lunfiera-web-target-platform-enablement"/>
+   <feature url="features/org.lunifera.web.feature.target.platform_0.0.1.qualifier.jar" id="org.lunifera.web.feature.target.platform" version="0.0.1.qualifier">
+      <category name="vaadin-features"/>
    </feature>
-   <feature url="features/org.lunifera.web.feature.vaadin.uimodel_0.0.1.qualifier.jar" id="org.lunifera.web.feature.vaadin.uimodel" version="0.0.1.qualifier">
-      <category name="lunifera-web-features"/>
-   </feature>
-   <category-def name="lunifera-web-features" label="Lunifera Web Features"/>
-   <category-def name="lunfiera-web-target-platform-enablement" label="Enabling features for the target platform">
-      <description>
-         These features have to be present in the target platform to ensure, that lunifera can work properly.
-      </description>
-   </category-def>
+   <category-def name="vaadin-features" label="vaadin features"/>
 </site>

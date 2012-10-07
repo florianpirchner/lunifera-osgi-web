@@ -17,20 +17,34 @@
       %license
    </license>
 
-   <requires>
-      <import plugin="com.vaadin.shared"/>
-      <import plugin="com.vaadin.themes"/>
-      <import plugin="com.vaadin.vaadin-client"/>
-      <import plugin="com.vaadin.vaadin-server"/>
-      <import plugin="org.json"/>
-      <import plugin="org.jsoup"/>
-   </requires>
-
    <plugin
-         id="org.lunifera.web.vaadin"
+         id="org.lunifera.web.ecp.uimodel.presentation.vaadin"
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.lunifera.web.example.vaadin.servlet.ozonelayer.fragment"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.lunifera.web.example.vaadin.singleton"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.lunifera.web.example.vaadin.widgetset.fragment"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>

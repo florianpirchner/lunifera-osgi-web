@@ -394,11 +394,11 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 			componentBase = new CssLayout();
 			componentBase.setSizeFull();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-			if (modelAccess.isCssIdValid()) {
-				componentBase.setId(modelAccess.getCssID());
-			} else {
-				componentBase.setId(getEditpart().getId());
-			}
+			// if (modelAccess.isCssIdValid()) {
+			// componentBase.setId(modelAccess.getCssID());
+			// } else {
+			// componentBase.setId(getEditpart().getId());
+			// }
 
 			gridlayout = new GridLayout(modelAccess.getColumns(), 1);
 			gridlayout.setSizeFull();
