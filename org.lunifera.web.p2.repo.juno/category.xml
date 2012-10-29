@@ -6,6 +6,9 @@
    <feature url="features/org.lunifera.web.feature.p2.target_0.0.1.qualifier.jar" id="org.lunifera.web.feature.p2.target" version="0.0.1.qualifier">
       <category name="lunfiera-web-target-platform-enablement"/>
    </feature>
+   <feature url="features/org.lunifera.web.feature.vaadin.uimodel_0.0.1.qualifier.jar" id="org.lunifera.web.feature.vaadin.uimodel" version="0.0.1.qualifier">
+      <category name="lunifera-web-features"/>
+   </feature>
    <category-def name="lunifera-web-features" label="Lunifera Web Features"/>
    <category-def name="lunfiera-web-target-platform-enablement" label="Enabling features for the target platform">
       <description>

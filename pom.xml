@@ -24,6 +24,7 @@
 		<m2e-buildhelper-p2>http://repository.tesla.io:8081/nexus/content/sites/m2e.extras/m2eclipse-buildhelper/0.15.0/N/0.15.0.201207090124/</m2e-buildhelper-p2>
 		<m2e-tycho-p2>http://repository.tesla.io:8081/nexus/content/sites/m2e.extras/m2eclipse-tycho/0.6.0/N/0.6.0.201207302152/</m2e-tycho-p2>
 		<local-vaadin-patch>file:${project.basedir}/../org.lunifera.web.p2.target.juno/local/p2</local-vaadin-patch>
+		<local-ecp-project>file:${project.basedir}/../org.lunifera.web.p2.target.juno/local/p2_ecpuimodel</local-ecp-project>
 	</properties>
 
 	<developers>
@@ -91,6 +92,7 @@
                 <module>org.lunifera.web.vaadin.widgetset</module>
 				<module>org.lunifera.web.feature.vaadin</module>
 				<module>org.lunifera.web.feature.p2.target</module>
+				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
 			</modules>
 			<repositories>
 				<repository>
@@ -128,6 +130,7 @@
                 <module>org.lunifera.web.vaadin.widgetset</module>
 				<module>org.lunifera.web.feature.vaadin</module>
 				<module>org.lunifera.web.feature.p2.target</module>
+				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
 				<!-- P2 bundles -->
 			</modules>
 		</profile>
@@ -137,6 +140,17 @@
 		<repository>
 			<id>local-vaadin-patch</id>
 			<url>${local-vaadin-patch}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>local-ecp-project</id>
+			<url>${local-ecp-project}</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -299,6 +313,12 @@
         <module>org.lunifera.web.vaadin.widgetset</module>
 		<module>org.lunifera.web.feature.vaadin</module>
 		<module>org.lunifera.web.feature.p2.target</module>
+		<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
+		<module>
+			org.lunifera.web.ecp.uimodel.presentation.vaadin.example
+		</module>
+		<module>org.lunifera.web.example.vaadin.singleton</module>
+		<module>org.lunifera.web.feature.vaadin.uimodel</module>
 	</modules>
 	<dependencies>
 		<dependency>
