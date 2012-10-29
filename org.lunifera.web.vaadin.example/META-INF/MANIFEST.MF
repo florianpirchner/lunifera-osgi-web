@@ -11,6 +11,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.lunifera.web.vaadin;bundle-version="0.0.1",
  javax.servlet;bundle-version="3.0.0",
  com.vaadin.shared;bundle-version="7.0.0",
- com.vaadin.vaadin-client;bundle-version="7.0.0",
- com.vaadin.vaadin-server;bundle-version="7.0.0"
+ com.vaadin.server;bundle-version="7.0.0",
+ com.vaadin.client-compiled;bundle-version="7.0.0"
 Bundle-ActivationPolicy: lazy

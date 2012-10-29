@@ -14,6 +14,7 @@ package org.lunifera.web.vaadin;
 
 import java.util.Dictionary;
 
+import org.lunifera.web.vaadin.common.OSGiUI;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.component.ComponentInstance;
 
@@ -27,7 +28,6 @@ public class OSGiUIProvider extends UIProvider {
 
 	private final ComponentFactory factory;
 	private final Class<? extends UI> uiClass;
-	private ComponentInstance instance;
 
 	@SuppressWarnings("rawtypes")
 	public OSGiUIProvider(ComponentFactory factory,
@@ -44,15 +44,9 @@ public class OSGiUIProvider extends UIProvider {
 
 	@Override
 	public UI createInstance(UICreateEvent event) {
-		instance = factory.newInstance(null);
-		return (UI) instance.getInstance();
+		ComponentInstance instance = factory.newInstance(null);
+		OSGiUI ui = (OSGiUI) instance.getInstance();
+		ui.setComponentInstance(instance);
+		return ui;
 	}
-
-	public void dispose() {
-		if (instance != null) {
-			instance.dispose();
-			instance = null;
-		}
-	}
-
 }

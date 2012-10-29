@@ -10,6 +10,7 @@
  * 		Based on original sources of 
  * 				- org.vaadin.osgi.VaadinOSGiServlet from Chris Brind
  *				- com.c4biz.osgiutils.vaadin.equinox.shiro.VaadinOSGiServlet from Cristiano Gaviao
+ *				- org.vaadin.artur.icepush.ICEPushServlet from Arthur Signell
  *
  * Contributors:
  *    Florian Pirchner - migrated to vaadin 7 and copied into org.lunifera namespace
@@ -17,28 +18,34 @@
  *******************************************************************************/
 package org.lunifera.web.vaadin.servlet;
 
+import java.io.IOException;
 import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.icepush.servlet.MainServlet;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.component.ComponentInstance;
+import org.vaadin.artur.icepush.ICEPush;
+import org.vaadin.artur.icepush.JavascriptProvider;
 
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
 
 /**
  * Used to create instances of applications that have been registered with the
  * container via a component factory.
  * 
- * @author brindy
  */
 @SuppressWarnings("rawtypes")
 public class VaadinOSGiServlet extends VaadinServlet implements
@@ -47,14 +54,80 @@ public class VaadinOSGiServlet extends VaadinServlet implements
 	private static final long serialVersionUID = 1L;
 
 	private final ComponentFactory factory;
-
 	private Set<VaadinSessionInfo> sessions = new HashSet<VaadinSessionInfo>();
-
 	private Dictionary properties;
+
+	private MainServlet iCEPushServlet;
+	private JavascriptProvider javascriptProvider;
 
 	public VaadinOSGiServlet(ComponentFactory factory, Dictionary properties) {
 		this.factory = factory;
 		this.properties = properties;
+	}
+
+	@Override
+	public void init(ServletConfig servletConfig) throws ServletException {
+		try {
+			super.init(servletConfig);
+		} catch (ServletException e) {
+			if (e.getMessage().equals(
+					"Application not specified in servlet parameters")) {
+				// Ignore if application is not specified to allow the same
+				// servlet to be used for only push in portals
+			} else {
+				throw e;
+			}
+		}
+
+		iCEPushServlet = new MainServlet(servletConfig.getServletContext());
+
+		try {
+			javascriptProvider = new JavascriptProvider(getServletContext()
+					.getContextPath());
+
+			ICEPush.setCodeJavascriptLocation(javascriptProvider
+					.getCodeLocation());
+		} catch (IOException e) {
+			throw new ServletException("Error initializing JavascriptProvider",
+					e);
+		}
+	}
+
+	@Override
+	protected void service(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String pathInfo = request.getPathInfo();
+		if (pathInfo != null
+				&& pathInfo.equals("/" + javascriptProvider.getCodeName())) {
+			// Serve icepush.js
+			serveIcePushCode(request, response);
+			return;
+		}
+
+		if (request.getRequestURI().endsWith(".icepush")) {
+			// Push request
+			try {
+				iCEPushServlet.service(request, response);
+			} catch (ServletException e) {
+				throw e;
+			} catch (IOException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			// Vaadin request
+			super.service(request, response);
+		}
+	}
+
+	private void serveIcePushCode(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+
+		String icepushJavscript = javascriptProvider.getJavaScript();
+
+		response.setHeader("Content-Type", "text/javascript");
+		response.getOutputStream().write(icepushJavscript.getBytes());
 	}
 
 	@Override
@@ -64,10 +137,14 @@ public class VaadinOSGiServlet extends VaadinServlet implements
 	}
 
 	@Override
-	public VaadinSession createVaadinSession(VaadinRequest request,
+	public VaadinServiceSession createVaadinSession(VaadinRequest request,
 			HttpServletRequest httpServletRequest) {
-		final VaadinSessionInfo info = new VaadinSessionInfo(
-				factory.newInstance(properties),
+
+		ComponentInstance instance = factory.newInstance(properties);
+		VaadinServiceSession session = (VaadinServiceSession) instance
+				.getInstance();
+		session.init(request.getService());
+		final VaadinSessionInfo info = new VaadinSessionInfo(instance,
 				httpServletRequest.getSession());
 
 		info.session.setAttribute(VaadinOSGiServlet.class.getName(),
@@ -83,7 +160,7 @@ public class VaadinOSGiServlet extends VaadinServlet implements
 					}
 				});
 		System.out.println("Ready: " + info); //$NON-NLS-1$
-		return (VaadinSession) info.instance.getInstance();
+		return (VaadinServiceSession) info.instance.getInstance();
 	}
 
 	@Override
@@ -98,6 +175,8 @@ public class VaadinOSGiServlet extends VaadinServlet implements
 				info.dispose();
 			}
 		}
+
+		iCEPushServlet.shutdown();
 	}
 
 	/**

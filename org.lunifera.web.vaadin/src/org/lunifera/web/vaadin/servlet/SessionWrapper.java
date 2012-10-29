@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 import org.osgi.service.component.ComponentInstance;
 
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.VaadinServiceSession;
 
 /**
  * Track the component instance and session and hold an Application object.
@@ -33,9 +33,9 @@ public class SessionWrapper implements HttpSessionBindingListener {
 
 	final ComponentInstance instance;
 	final HttpSession httpSession;
-	private VaadinSession vaadinSession;
+	private VaadinServiceSession vaadinSession;
 
-	public VaadinSession getApp() {
+	public VaadinServiceSession getApp() {
 		return vaadinSession;
 	}
 
@@ -46,7 +46,7 @@ public class SessionWrapper implements HttpSessionBindingListener {
 
 	@Override
 	public void valueBound(HttpSessionBindingEvent param) {
-		vaadinSession = (VaadinSession) instance.getInstance();
+		vaadinSession = (VaadinServiceSession) instance.getInstance();
 	}
 
 	@Override

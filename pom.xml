@@ -88,6 +88,7 @@
 				<module>org.lunifera.web.p2.target.juno</module>
 				<module>org.lunifera.web.vaadin</module>
 				<module>org.lunifera.web.vaadin.example</module>
+                <module>org.lunifera.web.vaadin.widgetset</module>
 				<module>org.lunifera.web.feature.vaadin</module>
 				<module>org.lunifera.web.feature.p2.target</module>
 			</modules>
@@ -124,6 +125,7 @@
 				<module>org.lunifera.web.p2.repo.juno</module>
 				<module>org.lunifera.web.p2.target.juno</module>
 				<module>org.lunifera.web.vaadin</module>
+                <module>org.lunifera.web.vaadin.widgetset</module>
 				<module>org.lunifera.web.feature.vaadin</module>
 				<module>org.lunifera.web.feature.p2.target</module>
 				<!-- P2 bundles -->
@@ -294,6 +296,7 @@
 		<module>org.lunifera.web.p2.repo.juno</module>
 		<module>org.lunifera.web.p2.target.juno</module>
 		<module>org.lunifera.web.vaadin</module>
+        <module>org.lunifera.web.vaadin.widgetset</module>
 		<module>org.lunifera.web.feature.vaadin</module>
 		<module>org.lunifera.web.feature.p2.target</module>
 	</modules>

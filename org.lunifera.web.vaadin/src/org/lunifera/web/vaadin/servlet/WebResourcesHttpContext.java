@@ -53,7 +53,7 @@ public class WebResourcesHttpContext implements HttpContext, BundleListener {
 		// iterate the server bundle, client bundle and fragments
 		for (Bundle bundle : resourceBundles) {
 			String root = (String) bundle.getHeaders().get("Vaadin-Resources");
-			if (root != null && !".".equals(root)) {
+			if (root != null && !root.equals("") && !".".equals(root)) {
 				uri = "/" + root + uri;
 			}
 			if (null != (resource = bundle.getResource(uri))) {
@@ -94,7 +94,7 @@ public class WebResourcesHttpContext implements HttpContext, BundleListener {
 	 * @return
 	 */
 	private boolean isServerBundle(Bundle bundle) {
-		return bundle.getSymbolicName().equals("com.vaadin.vaadin-server");
+		return bundle.getSymbolicName().equals("com.vaadin.server");
 	}
 
 	/**
@@ -104,7 +104,9 @@ public class WebResourcesHttpContext implements HttpContext, BundleListener {
 	 * @return
 	 */
 	private boolean isClientBundle(Bundle bundle) {
-		return bundle.getSymbolicName().equals("com.vaadin.vaadin-client");
+		return bundle.getSymbolicName().equals("com.vaadin.client")
+				|| bundle.getSymbolicName()
+						.equals("com.vaadin.client-compiled");
 	}
 
 	/**

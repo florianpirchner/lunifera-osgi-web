@@ -27,7 +27,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.log.LogService;
 
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.VaadinServiceSession;
 
 /**
  * Activator for this bundle which opens a service vaadinAppTracker which looks
@@ -106,7 +106,7 @@ public class Activator implements BundleActivator {
 
 	private void startVaadin(BundleContext context) {
 
-		vaadinBundle = FrameworkUtil.getBundle(VaadinSession.class);
+		vaadinBundle = FrameworkUtil.getBundle(VaadinServiceSession.class);
 		if (vaadinBundle == null) {
 			getLogService().log(LogService.LOG_ERROR,
 					"Bundle com.vaadin is not in target platform");

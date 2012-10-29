@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
-import com.vaadin.server.VaadinSession;
 
 @SuppressWarnings("serial")
 public class OSGiServletService extends VaadinServletService {
@@ -35,7 +35,7 @@ public class OSGiServletService extends VaadinServletService {
 	}
 
 	@Override
-	protected VaadinSession createVaadinSession(VaadinRequest request)
+	protected VaadinServiceSession createVaadinSession(VaadinRequest request)
 			throws ServiceException {
 		return sessionManager.createVaadinSession(request,
 				getCurrentServletRequest());
@@ -54,7 +54,7 @@ public class OSGiServletService extends VaadinServletService {
 		 * 
 		 * @return
 		 */
-		VaadinSession createVaadinSession(VaadinRequest request,
+		VaadinServiceSession createVaadinSession(VaadinRequest request,
 				HttpServletRequest httpServletRequest);
 	}
 }

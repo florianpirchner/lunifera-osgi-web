@@ -23,23 +23,27 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.component.ComponentFactory;
 
-import com.vaadin.server.VaadinService;
-import com.vaadin.server.VaadinServletService;
-import com.vaadin.server.VaadinServletSession;
+import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.ui.UI;
 
-public class OSGiVaadinSession extends VaadinServletSession {
+@SuppressWarnings("serial")
+public class OSGiVaadinServiceSession extends VaadinServiceSession {
 
 	private Map<ComponentFactory, OSGiUIProvider> uiProviders = new HashMap<ComponentFactory, OSGiUIProvider>();
 	private BundleContext context;
 
 	private List<Pair> pendingFactories = new ArrayList<Pair>();
 
-	public OSGiVaadinSession() {
+	public OSGiVaadinServiceSession() {
 	}
 
 	public void activate(BundleContext context) throws InvalidSyntaxException {
 		this.context = context;
+
+		for (Pair pair : pendingFactories) {
+			addFactory(pair);
+		}
+		pendingFactories.clear();
 	}
 
 	public void deactivate() {
@@ -56,38 +60,23 @@ public class OSGiVaadinSession extends VaadinServletSession {
 		pendingFactories.add(new Pair(factory, properties));
 	}
 
-	@Override
-	@Deprecated
 	@SuppressWarnings("unchecked")
-	public void start(SessionStartEvent event) {
-		super.start(event);
-		
-		VaadinService service = VaadinServletService.getCurrent();
-		if (!hasVaadinServiceData(service)) {
-			addVaadinServiceData(new VaadinService.VaadinServiceData(
-					service));
+	public void addFactory(Pair pair) {
+		ComponentFactory factory = pair.getFactory();
+		String name = (String) pair.getProperties().get("component.factory");
+		String className = name.substring(Constants.PREFIX__UI_CLASS.length());
+		OSGiUIProvider uiProvider = null;
+		try {
+			uiProvider = new OSGiUIProvider(factory,
+					(Class<? extends UI>) context.getBundle().loadClass(
+							className), null);
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException(e);
 		}
-
-		for (Pair pair : pendingFactories) {
-			ComponentFactory factory = pair.getFactory();
-			String name = (String) pair.getProperties()
-					.get("component.factory");
-			String className = name.substring(Constants.PREFIX__UI_CLASS
-					.length());
-			OSGiUIProvider uiProvider = null;
-			try {
-				uiProvider = new OSGiUIProvider(factory,
-						(Class<? extends UI>) context.getBundle().loadClass(
-								className), null);
-			} catch (ClassNotFoundException e) {
-				throw new IllegalStateException(e);
-			}
-			if (uiProvider != null) {
-				uiProviders.put(factory, uiProvider);
-				service.addUIProvider(this, uiProvider);
-			}
+		if (uiProvider != null) {
+			uiProviders.put(factory, uiProvider);
+			addUIProvider(uiProvider);
 		}
-		pendingFactories.clear();
 	}
 
 	/**

@@ -30,8 +30,6 @@ import org.osgi.service.cm.ManagedService;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.http.HttpContext;
 
-import com.vaadin.server.VaadinSession;
-
 /**
  * This class is responsible for registering the {@link ComponentFactory} as a
  * vaadin {@link VaadinSession}. It is a {@link ManagedService} so that it can
