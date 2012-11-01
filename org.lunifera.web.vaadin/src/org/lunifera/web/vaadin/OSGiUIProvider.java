@@ -14,14 +14,18 @@ package org.lunifera.web.vaadin;
 
 import java.util.Dictionary;
 
-import org.lunifera.web.vaadin.common.OSGiUI;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.component.ComponentInstance;
 
+import com.vaadin.server.SessionDestroyEvent;
+import com.vaadin.server.SessionDestroyListener;
 import com.vaadin.server.UIClassSelectionEvent;
 import com.vaadin.server.UICreateEvent;
 import com.vaadin.server.UIProvider;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.UI.CleanupEvent;
+import com.vaadin.ui.UI.CleanupListener;
 
 @SuppressWarnings("serial")
 public class OSGiUIProvider extends UIProvider {
@@ -45,8 +49,48 @@ public class OSGiUIProvider extends UIProvider {
 	@Override
 	public UI createInstance(UICreateEvent event) {
 		ComponentInstance instance = factory.newInstance(null);
-		OSGiUI ui = (OSGiUI) instance.getInstance();
-		ui.setComponentInstance(instance);
+		UI ui = (UI) instance.getInstance();
+		// create a new lifecylce
+		new InstanceLifecycle(instance, event);
+
 		return ui;
+	}
+
+	/**
+	 * Handles the disposal of the session.
+	 */
+	private static class InstanceLifecycle implements SessionDestroyListener,
+			CleanupListener {
+
+		private ComponentInstance instance;
+		private VaadinService service;
+
+		public InstanceLifecycle(ComponentInstance instance, UICreateEvent event) {
+			this.instance = instance;
+			this.service = event.getService();
+			this.service.addSessionDestroyListener(this);
+			UI ui = (UI) instance.getInstance();
+			ui.addCleanupListener(this);
+		}
+
+		@Override
+		public void sessionDestroy(SessionDestroyEvent event) {
+			if (event.getService() == service) {
+				dispose();
+			}
+		}
+
+		@Override
+		public void cleanup(CleanupEvent event) {
+			dispose();
+		}
+
+		private void dispose() {
+			instance.dispose();
+			instance = null;
+
+			service.removeSessionDestroyListener(this);
+			service = null;
+		}
 	}
 }
