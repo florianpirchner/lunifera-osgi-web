@@ -14,7 +14,7 @@ package org.lunifera.web.vaadin.common;
 
 import java.util.List;
 
-import org.lunifera.web.vaadin.OSGiUIProvider;
+import org.lunifera.web.vaadin.webapp.OSGiUIProvider;
 
 public interface IVaadinWebApplication {
 

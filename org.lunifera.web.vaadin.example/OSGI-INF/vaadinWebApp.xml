@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" name="org.lunifera.web.vaadin.example.webapp">
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" immediate="true" name="org.lunifera.web.vaadin.example.webapp">
    <implementation class="org.lunifera.web.vaadin.webapp.VaadinWebApplication"/>
    <service>
       <provide interface="org.lunifera.web.vaadin.common.IVaadinWebApplication"/>

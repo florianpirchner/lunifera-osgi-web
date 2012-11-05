@@ -54,11 +54,11 @@ public class VaadinWebApplicationRegister implements ManagedService {
 	private IVaadinWebApplication webApplication;
 
 	public VaadinWebApplicationRegister(ExtendedHttpService http,
-			IVaadinWebApplication webApplication, String alias) {
+			IVaadinWebApplication webApplication) {
 		super();
 		this.http = http;
 		this.webApplication = webApplication;
-		this.alias = alias;
+		this.alias = webApplication.getAlias();
 	}
 
 	public void kill() {

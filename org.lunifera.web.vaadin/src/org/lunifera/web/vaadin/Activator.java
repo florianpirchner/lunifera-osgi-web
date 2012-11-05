@@ -17,22 +17,20 @@
  *******************************************************************************/
 package org.lunifera.web.vaadin;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.equinox.http.jetty.JettyConstants;
 import org.lunifera.web.vaadin.common.IVaadinWebApplication;
-import org.lunifera.web.vaadin.webapp.VaadinWebApplicationTracker;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.log.LogService;
-
-import com.vaadin.server.VaadinServiceSession;
 
 /**
  * Activator for this bundle which opens a service vaadinAppTracker which looks
@@ -59,7 +57,6 @@ import com.vaadin.server.VaadinServiceSession;
  */
 public class Activator implements BundleActivator {
 
-	private VaadinWebApplicationTracker webApplicationTracker;
 	private LogService logService;
 	private Bundle jettyBundle;
 	private Bundle vaadinBundle;
@@ -80,10 +77,30 @@ public class Activator implements BundleActivator {
 
 	/**
 	 * Returns the vaadin web application with the given name.
+	 * 
 	 * @param name
 	 * @return
 	 */
-	public static IVaadinWebApplication getWebApplication(String name) {
+	protected static Collection<IVaadinWebApplication> getVaadinWebApplications() {
+		List<IVaadinWebApplication> services = new ArrayList<IVaadinWebApplication>();
+		try {
+			for (ServiceReference<IVaadinWebApplication> reference : bundleContext
+					.getServiceReferences(IVaadinWebApplication.class, null)) {
+				services.add(bundleContext.getService(reference));
+			}
+		} catch (InvalidSyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		return services;
+	}
+
+	/**
+	 * Returns the vaadin web application with the given name.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public IVaadinWebApplication getVaadinWebApplication(String name) {
 		try {
 			Collection<ServiceReference<IVaadinWebApplication>> refs = bundleContext
 					.getServiceReferences(IVaadinWebApplication.class,
@@ -118,11 +135,11 @@ public class Activator implements BundleActivator {
 		// start the Vaadin bundle
 		startVaadin(context);
 
+		// initialy load web applications
+		// getVaadinWebApplications();
+
 		// start the application tracker that will be waiting for a Vaadin
 		// application get registered.
-		webApplicationTracker = new VaadinWebApplicationTracker(context,
-				logService);
-		webApplicationTracker.open();
 	}
 
 	private void startJetty(BundleContext context) {
@@ -138,31 +155,15 @@ public class Activator implements BundleActivator {
 
 	private void startVaadin(BundleContext context) {
 
-		vaadinBundle = FrameworkUtil.getBundle(VaadinServiceSession.class);
-		if (vaadinBundle == null) {
-			getLogService().log(LogService.LOG_ERROR,
-					"Bundle com.vaadin is not in target platform");
-		}
-
-		// vaadin bundle doesn't have auto-start, so need to start it
-		try {
-			vaadinBundle.start();
-		} catch (BundleException e) {
-			getLogService().log(LogService.LOG_ERROR,
-					"Bundle com.vaadin had error on start up.", e);
-		}
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 
-		webApplicationTracker.close();
-
 		vaadinBundle.stop();
 
 		jettyBundle.stop();
 
-		webApplicationTracker = null;
 		vaadinBundle = null;
 		jettyBundle = null;
 		logService = null;

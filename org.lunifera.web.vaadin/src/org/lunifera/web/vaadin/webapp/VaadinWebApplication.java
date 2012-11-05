@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.lunifera.web.vaadin.OSGiUIProvider;
 import org.lunifera.web.vaadin.common.IVaadinWebApplication;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;

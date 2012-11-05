@@ -15,7 +15,6 @@ package org.lunifera.web.vaadin.webapp;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lunifera.web.vaadin.OSGiUIProvider;
 import org.lunifera.web.vaadin.common.Constants;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;

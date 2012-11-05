@@ -19,12 +19,9 @@ Require-Bundle: javax.servlet;bundle-version="3.0.0";visibility:=reexport,
  com.vaadin.shared;bundle-version="7.0.0";visibility:=reexport,
  com.vaadin.server;bundle-version="7.0.0",
  com.vaadin.client-compiled;bundle-version="7.0.0",
- com.vaadin.themes;bundle-version="7.0.0",
- org.lunifera.web.vaadin.addon.icepush;bundle-version="0.0.1"
+ com.vaadin.themes;bundle-version="7.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.lunifera.web.vaadin;x-internal:=true,
- org.lunifera.web.vaadin.addons;x-internal:=true,
  org.lunifera.web.vaadin.common,
  org.lunifera.web.vaadin.servlet;x-internal:=true,
  org.lunifera.web.vaadin.webapp;x-internal:=true
-Service-Component: OSGI-INF/addonContextListenerImpl.xml

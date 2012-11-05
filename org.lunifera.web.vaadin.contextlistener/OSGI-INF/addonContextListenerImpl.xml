@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.lunifera.web.vaadin.addons.listener">
+   <implementation class="org.lunifera.web.vaadin.contextlistener.AddonContextListenerImpl"/>
+   <service>
+      <provide interface="com.vaadin.server.AddonContextListener"/>
+   </service>
+</scr:component>

@@ -45,20 +45,18 @@ import org.osgi.util.tracker.ServiceTracker;
 public class HttpServiceTracker extends ServiceTracker {
 
 	private IVaadinWebApplication webApplication;
-	private final String alias;
 
 	public String getAlias() {
-		return alias;
+		return webApplication.getAlias();
 	}
 
 	private final LogService logService;
 	private Map<ExtendedHttpService, VaadinWebApplicationRegister> configs = new IdentityHashMap<ExtendedHttpService, VaadinWebApplicationRegister>();
 
-	public HttpServiceTracker(BundleContext ctx, IVaadinWebApplication webApplication,
-			LogService logService) {
+	public HttpServiceTracker(BundleContext ctx,
+			IVaadinWebApplication webApplication, LogService logService) {
 		super(ctx, ExtendedHttpService.class.getName(), null);
 		this.webApplication = webApplication;
-		this.alias = webApplication.getAlias();
 		this.logService = logService;
 	}
 
@@ -68,10 +66,11 @@ public class HttpServiceTracker extends ServiceTracker {
 				.addingService(reference);
 
 		// register the application
-		VaadinWebApplicationRegister config = new VaadinWebApplicationRegister(http, webApplication, alias);
+		VaadinWebApplicationRegister config = new VaadinWebApplicationRegister(
+				http, webApplication);
 
-		logService.log(LogService.LOG_DEBUG, "Application for alias \"" + alias
-				+ "\" was created.");
+		logService.log(LogService.LOG_DEBUG, "Application for alias \""
+				+ getAlias() + "\" was created.");
 
 		// save it for later
 		configs.put(http, config);
@@ -82,7 +81,7 @@ public class HttpServiceTracker extends ServiceTracker {
 		properties
 				.put(Constants.SERVICE_PID,
 						org.lunifera.web.vaadin.common.Constants.OSGI_COMP_NAME__WEBAPPLICATION
-								+ "." + alias);
+								+ "." + getAlias());
 		context.registerService(ManagedService.class.getName(), config,
 				properties);
 
@@ -99,8 +98,8 @@ public class HttpServiceTracker extends ServiceTracker {
 	@Override
 	public void removedService(ServiceReference reference, Object service) {
 		configs.remove(service).kill();
-		logService.log(LogService.LOG_DEBUG, "Application for alias \"" + alias
-				+ "\" was removed.");
+		logService.log(LogService.LOG_DEBUG, "Application for alias \""
+				+ getAlias() + "\" was removed.");
 
 		super.removedService(reference, service);
 	}
