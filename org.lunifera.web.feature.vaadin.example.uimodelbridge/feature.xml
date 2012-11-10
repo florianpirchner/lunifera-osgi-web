@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.lunifera.web.feature.vaadin.example.uimodelbridge"
+      label="%featureName"
+      version="0.0.1.qualifier"
+      provider-name="%providerName">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import feature="org.lunifera.web.feature.vaadin" version="0.0.1.qualifier"/>
+      <import feature="org.lunifera.web.feature.vaadin.uimodel" version="0.0.1.qualifier"/>
+   </requires>
+
+   <plugin
+         id="org.lunifera.web.vaadin.example.uimodelbridge"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

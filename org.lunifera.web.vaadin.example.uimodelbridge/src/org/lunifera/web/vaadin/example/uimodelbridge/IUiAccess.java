@@ -1,4 +1,4 @@
-package org.lunifera.web.example.vaadin.singleton;
+package org.lunifera.web.vaadin.example.uimodelbridge;
 
 import org.eclipse.emf.ecp.ui.model.core.uimodel.YUiView;
 

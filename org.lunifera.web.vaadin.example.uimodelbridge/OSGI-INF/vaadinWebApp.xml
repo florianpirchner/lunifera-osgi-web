@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" immediate="true" name="org.lunifera.web.vaadin.example.uimodelbridge.webapp">
+   <implementation class="org.lunifera.web.vaadin.webapp.VaadinWebApplication"/>
+   <service>
+      <provide interface="org.lunifera.web.vaadin.common.IVaadinWebApplication"/>
+   </service>
+   <property name="alias" type="String" value="/designStudy"/>
+</scr:component>

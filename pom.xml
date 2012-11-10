@@ -77,39 +77,6 @@
 			</build>
 		</profile>
 		<profile>
-			<id>testAll</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<defaultGoal>verify</defaultGoal>
-			</build>
-			<modules>
-				<module>org.lunifera.web.p2.repo.juno</module>
-				<module>org.lunifera.web.p2.target.juno</module>
-				<module>org.lunifera.web.vaadin</module>
-				<module>org.lunifera.web.vaadin.example</module>
-                <module>org.lunifera.web.vaadin.widgetset</module>
-				<module>org.lunifera.web.feature.vaadin</module>
-				<module>org.lunifera.web.feature.p2.target</module>
-				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
-			</modules>
-			<repositories>
-				<repository>
-					<id>lastest_lunifera_built_p2</id>
-					<url>file://${basedir}/../org.lunifera.web.p2.repo.juno/target/repository</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-					<layout>p2</layout>
-				</repository>
-			</repositories>
-		</profile>
-
-		<profile>
 			<id>p2-juno</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -121,16 +88,56 @@
 				<!-- exclusive for P2 -->
 
 				<!-- P2 features -->
+				<module>org.lunifera.web.feature.p2.target</module>
+				<module>org.lunifera.web.feature.vaadin</module>
+				<module>org.lunifera.web.feature.vaadin.uimodel</module>
 				<!-- end P2 features -->
 
 				<!-- P2 bundles -->
 				<module>org.lunifera.web.p2.repo.juno</module>
 				<module>org.lunifera.web.p2.target.juno</module>
 				<module>org.lunifera.web.vaadin</module>
-                <module>org.lunifera.web.vaadin.widgetset</module>
-				<module>org.lunifera.web.feature.vaadin</module>
-				<module>org.lunifera.web.feature.p2.target</module>
+				<module>org.lunifera.web.vaadin.contextlistener</module>
+				<module>org.lunifera.web.vaadin.widgetset</module>
+				<module>org.lunifera.web.vaadin.example</module>
+				<module>org.lunifera.web.vaadin.example.uimodelbridge</module>
 				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
+				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin.example</module>
+				
+				<module>org.lunifera.web.vaadin.push</module>
+				<!-- P2 bundles -->
+			</modules>
+		</profile>
+		
+				<profile>
+			<id>p2-juno-push</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<defaultGoal>verify</defaultGoal>
+			</build>
+			<modules>
+				<!-- exclusive for P2 -->
+
+				<!-- P2 features -->
+				<module>org.lunifera.web.feature.p2.target</module>
+				<module>org.lunifera.web.feature.vaadin</module>
+				<module>org.lunifera.web.feature.vaadin.uimodel</module>
+				<!-- end P2 features -->
+
+				<!-- P2 bundles -->
+				<module>org.lunifera.web.p2.repo.juno</module>
+				<module>org.lunifera.web.p2.target.juno</module>
+				<module>org.lunifera.web.vaadin.push</module>
+				<module>org.lunifera.web.vaadin.contextlistener</module>
+				<module>org.lunifera.web.vaadin.widgetset</module>
+				<module>org.lunifera.web.vaadin.example</module>
+				<module>org.lunifera.web.vaadin.example.uimodelbridge</module>
+				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
+				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin.example</module>
+				
+				<module>org.lunifera.web.vaadin.push</module>
 				<!-- P2 bundles -->
 			</modules>
 		</profile>
@@ -310,15 +317,19 @@
 		<module>org.lunifera.web.p2.repo.juno</module>
 		<module>org.lunifera.web.p2.target.juno</module>
 		<module>org.lunifera.web.vaadin</module>
-        <module>org.lunifera.web.vaadin.widgetset</module>
-		<module>org.lunifera.web.feature.vaadin</module>
+		<module>org.lunifera.web.vaadin.contextlistener</module>
+		<module>org.lunifera.web.vaadin.widgetset</module>
+		<module>org.lunifera.web.vaadin.example</module>
+		<module>org.lunifera.web.vaadin.example.uimodelbridge</module>
 		<module>org.lunifera.web.feature.p2.target</module>
-		<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
-		<module>
-			org.lunifera.web.ecp.uimodel.presentation.vaadin.example
-		</module>
-		<module>org.lunifera.web.example.vaadin.singleton</module>
+		<module>org.lunifera.web.feature.vaadin</module>
 		<module>org.lunifera.web.feature.vaadin.uimodel</module>
+		<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
+		<module>org.lunifera.web.ecp.uimodel.presentation.vaadin.example</module>
+		<module>org.lunifera.web.feature.vaadin.example</module>
+		<module>
+			org.lunifera.web.feature.vaadin.example.uimodelbridge
+		</module>
 	</modules>
 	<dependencies>
 		<dependency>
