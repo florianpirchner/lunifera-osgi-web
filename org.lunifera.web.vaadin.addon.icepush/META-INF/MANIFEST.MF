@@ -19,7 +19,7 @@ Export-Package: org.icepush,
  org.icepush.notify,
  org.icepush.servlet,
  org.icepush.util,
- org.vaadin.artur.icepush,
+ org.vaadin.artur.icepush, 
  org.vaadin.artur.icepush.client.ui
 Bundle-ClassPath: .,
  icepush-0.5.1.jar,
