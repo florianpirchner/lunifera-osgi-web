@@ -330,6 +330,7 @@
 		<module>
 			org.lunifera.web.feature.vaadin.example.uimodelbridge
 		</module>
+		<module>org.lunifera.web.feature.vaadin.designstudy01</module>
 	</modules>
 	<dependencies>
 		<dependency>

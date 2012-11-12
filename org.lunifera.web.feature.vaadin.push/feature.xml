@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.lunifera.web.feature.vaadin"
+      id="org.lunifera.web.feature.vaadin.push"
       label="%featureName"
       version="0.0.1.qualifier"
       provider-name="%providerName">
@@ -27,13 +27,6 @@
    </requires>
 
    <plugin
-         id="org.lunifera.web.vaadin"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.lunifera.web.vaadin.contextlistener"
          download-size="0"
          install-size="0"
@@ -41,7 +34,21 @@
          unpack="false"/>
 
    <plugin
-         id="org.lunifera.web.vaadin.widgetset"
+         id="org.lunifera.web.vaadin.addon.icepush"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.lunifera.web.vaadin.push"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.lunifera.web.vaadin.widgetset.push"
          download-size="0"
          install-size="0"
          version="0.0.0"
