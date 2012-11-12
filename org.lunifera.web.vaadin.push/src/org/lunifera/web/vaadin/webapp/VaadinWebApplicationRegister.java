@@ -31,8 +31,7 @@ import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.http.HttpContext;
-
-import com.vaadin.server.VaadinServlet;
+import org.vaadin.artur.icepush.ICEPushServlet;
 
 /**
  * This class is responsible for registering the {@link ComponentFactory} as a
@@ -46,7 +45,7 @@ public class VaadinWebApplicationRegister implements ManagedService {
 	private final ExtendedHttpService http;
 	private final String alias;
 
-	private VaadinServlet servlet;
+	private ICEPushServlet servlet;
 
 	private Filter filter;
 
@@ -92,13 +91,19 @@ public class VaadinWebApplicationRegister implements ManagedService {
 			properties
 					.put(org.lunifera.web.vaadin.common.Constants.OSGI_COMP_NAME__WEBAPPLICATION,
 							webApplication.getName());
-
-			servlet = new VaadinServlet();
+			servlet = new ICEPushServlet(alias);
 			HttpContext defaultContext = new WebResourcesHttpContext(Activator
 					.getBundleContext().getBundle());
 			http.registerFilter("/", getSecurityFilter(), properties,
 					defaultContext);
 			http.registerResources(RESOURCE_BASE, RESOURCE_BASE, defaultContext);
+
+			properties = new Hashtable();
+			properties
+					.put(org.lunifera.web.vaadin.common.Constants.OSGI_COMP_NAME__WEBAPPLICATION,
+							webApplication.getName());
+			properties.put("load-on-startup", new String("1"));
+			properties.put("org.icepush.useAsyncContext", "false");
 			http.registerServlet(alias, servlet, properties, defaultContext);
 
 		} catch (Exception e) {

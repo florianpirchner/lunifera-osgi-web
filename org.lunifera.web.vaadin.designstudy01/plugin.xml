@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.lunifera.org/web/vaadin/designstudy01/Designstudy01" 
+       class = "org.lunifera.web.vaadin.designstudy01.designstudy01.Designstudy01Package"
+       genModel = "org/lunifera/web/vaadin/designstudy01/Designstudy01.genmodel" /> 
+	
+  </extension>
+
+
+
+
+</plugin>

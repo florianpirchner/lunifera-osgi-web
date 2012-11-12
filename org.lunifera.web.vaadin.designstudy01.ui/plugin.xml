@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+    <extension
+            point="org.eclipse.ui.editors">
+        <editor
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            default="true"
+            extensions="ds01"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+            name="Designstudy01 Editor">
+        </editor>
+    </extension>
+    <extension
+        point="org.eclipse.ui.handlers">
+        <handler
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+            commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
+            <activeWhen>
+                <reference
+                    definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+                </reference>
+            </activeWhen>
+        </handler>
+        <handler
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+            commandId="org.lunifera.web.vaadin.designstudy01.Designstudy01.validate">
+         <activeWhen>
+            <reference
+                    definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+            </reference>
+         </activeWhen>
+      </handler>
+    </extension>
+    <extension point="org.eclipse.core.expressions.definitions">
+        <definition id="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+            <and>
+                <reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
+                <with variable="activeEditor">
+                    <test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName" 
+                        value="org.lunifera.web.vaadin.designstudy01.Designstudy01" 
+                        forcePluginActivation="true"/>
+                </with>        
+            </and>
+        </definition>
+    </extension>
+    <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+            name="Designstudy01">
+            <keywordReference id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"/>
+        </page>
+        <page
+            category="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01.coloring"
+            name="Syntax Coloring">
+            <keywordReference id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"/>
+        </page>
+        <page
+            category="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01.templates"
+            name="Templates">
+            <keywordReference id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"/>
+        </page>
+    </extension>
+    <extension
+            point="org.eclipse.ui.propertyPages">
+        <page
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+            name="Designstudy01">
+            <keywordReference id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+        </page>
+    </extension>
+    <extension
+        point="org.eclipse.ui.keywords">
+        <keyword
+            id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"
+            label="Designstudy01"/>
+    </extension>
+    <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Trigger expensive validation"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01.validate"
+            name="Validate">
+      </command>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.edit">
+             <command
+                 commandId="org.lunifera.web.vaadin.designstudy01.Designstudy01.validate"
+                 style="push"
+                 tooltip="Trigger expensive validation">
+            <visibleWhen checkEnabled="false">
+                <reference
+                    definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+                </reference>
+            </visibleWhen>
+         </command>  
+         </menuContribution>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
+			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+				<visibleWhen checkEnabled="false">
+                	<reference definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+                	</reference>
+            	</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+	    <handler
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+            commandId="org.eclipse.xtext.ui.editor.FindReferences">
+            <activeWhen>
+                <reference
+                    definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+                </reference>
+            </activeWhen>
+        </handler>
+    </extension>   
+
+<!-- adding resource factories -->
+
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="ds01">
+		</parser>
+	</extension>
+	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+        <resourceServiceProvider
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+            uriExtension="ds01">
+        </resourceServiceProvider>
+    </extension>
+
+
+    <!-- marker definitions for org.lunifera.web.vaadin.designstudy01.Designstudy01 -->
+    <extension
+            id="designstudy01.check.fast"
+            name="Designstudy01 Problem"
+            point="org.eclipse.core.resources.markers">
+        <super type="org.eclipse.xtext.ui.check.fast"/>
+        <persistent value="true"/>
+    </extension>
+    <extension
+            id="designstudy01.check.normal"
+            name="Designstudy01 Problem"
+            point="org.eclipse.core.resources.markers">
+        <super type="org.eclipse.xtext.ui.check.normal"/>
+        <persistent value="true"/>
+    </extension>
+    <extension
+            id="designstudy01.check.expensive"
+            name="Designstudy01 Problem"
+            point="org.eclipse.core.resources.markers">
+        <super type="org.eclipse.xtext.ui.check.expensive"/>
+        <persistent value="true"/>
+    </extension>
+
+   <extension
+         point="org.eclipse.xtext.builder.participant">
+      <participant
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant">
+      </participant>
+   </extension>
+   <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+            category="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01.compiler.preferencePage"
+            name="Compiler">
+            <keywordReference id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"/>
+        </page>
+    </extension>
+    <extension
+            point="org.eclipse.ui.propertyPages">
+        <page
+            category="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+            id="org.lunifera.web.vaadin.designstudy01.Designstudy01.compiler.propertyPage"
+            name="Compiler">
+            <keywordReference id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"/>
+            <enabledWhen>
+	            <adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+        </page>
+    </extension>
+
+	<!-- Quick Outline -->
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler 
+			class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
+			<activeWhen>
+				<reference
+					definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			description="Open the quick outline."
+			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+			name="Quick Outline">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.open">
+			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+				style="push"
+				tooltip="Open Quick Outline">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+    <!-- quickfix marker resolution generator for org.lunifera.web.vaadin.designstudy01.Designstudy01 -->
+    <extension
+            point="org.eclipse.ui.ide.markerResolution">
+        <markerResolutionGenerator
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+            markerType="org.lunifera.web.vaadin.designstudy01.ui.designstudy01.check.fast">
+            <attribute
+                name="FIXABLE_KEY"
+                value="true">
+            </attribute>
+        </markerResolutionGenerator>
+        <markerResolutionGenerator
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+            markerType="org.lunifera.web.vaadin.designstudy01.ui.designstudy01.check.normal">
+            <attribute
+                name="FIXABLE_KEY"
+                value="true">
+            </attribute>
+        </markerResolutionGenerator>
+        <markerResolutionGenerator
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+            markerType="org.lunifera.web.vaadin.designstudy01.ui.designstudy01.check.expensive">
+            <attribute
+                name="FIXABLE_KEY"
+                value="true">
+            </attribute>
+        </markerResolutionGenerator>
+    </extension>
+   	<!-- Rename Refactoring -->
+	<extension point="org.eclipse.ui.handlers">
+		<handler 
+			class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.IRenameElementHandler"
+			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
+			<activeWhen>
+				<reference
+					definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+    <extension point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.edit">
+         <command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <reference
+                     definitionId="org.lunifera.web.vaadin.designstudy01.Designstudy01.Editor.opened">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+	    <page
+	        category="org.lunifera.web.vaadin.designstudy01.Designstudy01"
+	        class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+	        id="org.lunifera.web.vaadin.designstudy01.Designstudy01.refactoring"
+	        name="Refactoring">
+	        <keywordReference id="org.lunifera.web.vaadin.designstudy01.ui.keyword_Designstudy01"/>
+	    </page>
+	</extension>
+
+  <extension point="org.eclipse.compare.contentViewers">
+    <viewer id="org.lunifera.web.vaadin.designstudy01.Designstudy01.compare.contentViewers"
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+            extensions="ds01">
+    </viewer>
+  </extension>
+  <extension point="org.eclipse.compare.contentMergeViewers">
+    <viewer id="org.lunifera.web.vaadin.designstudy01.Designstudy01.compare.contentMergeViewers"
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+            extensions="ds01" label="Designstudy01 Compare">
+     </viewer>
+  </extension>
+  <extension point="org.eclipse.ui.editors.documentProviders">
+    <provider id="org.lunifera.web.vaadin.designstudy01.Designstudy01.editors.documentProviders"
+            class="org.lunifera.web.vaadin.designstudy01.ui.Designstudy01ExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+            extensions="ds01">
+    </provider>
+  </extension>
+
+</plugin>

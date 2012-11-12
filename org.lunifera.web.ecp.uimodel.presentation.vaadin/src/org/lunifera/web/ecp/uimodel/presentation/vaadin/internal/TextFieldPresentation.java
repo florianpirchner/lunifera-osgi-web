@@ -10,10 +10,15 @@
  */
 package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiTextField;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextFieldEditpart;
+import org.eclipse.emf.ecp.ui.uimodel.core.editparts.internal.beans.ObjectBean;
 
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
@@ -22,7 +27,8 @@ import com.vaadin.ui.TextField;
 /**
  * This presenter is responsible to render a text field on the given layout.
  */
-public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
+public class TextFieldPresentation extends AbstractFieldPresenter implements
+		PropertyChangeListener {
 
 	private final ModelAccess modelAccess;
 	private CssLayout componentBase;
@@ -31,11 +37,27 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 	/**
 	 * Constructor.
 	 * 
-	 * @param editpart The editpart of that presenter
+	 * @param editpart
+	 *            The editpart of that presenter
 	 */
+	@SuppressWarnings("restriction")
 	public TextFieldPresentation(IUiElementEditpart editpart) {
 		super((IUiTextFieldEditpart) editpart);
 		this.modelAccess = new ModelAccess((YUiTextField) editpart.getModel());
+
+		// TODO make generic
+		ObjectBean valueBean = (ObjectBean) getEditpart().getView()
+				.getContext().getValueBean("master");
+		valueBean.addPropertyChangeListener(this);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		BeanItem<?> item = new BeanItem(event.getNewValue());
+		if (text != null) {
+			text.setPropertyDataSource(item.getItemProperty(modelAccess.yText
+					.getBindsTo()));
+		}
 	}
 
 	/**
@@ -55,6 +77,8 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 			text = new TextField();
 			text.addStyleName(CSS_CLASS__CONTROL);
 			text.setSizeFull();
+			text.setNullRepresentation("");
+			text.setNullSettingAllowed(true);
 			componentBase.addComponent(text);
 
 			if (modelAccess.isCssClassValid()) {
@@ -84,7 +108,8 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 	@Override
 	public void unrender() {
 		if (componentBase != null) {
-			ComponentContainer parent = ((ComponentContainer) componentBase.getParent());
+			ComponentContainer parent = ((ComponentContainer) componentBase
+					.getParent());
 			if (parent != null) {
 				parent.removeComponent(componentBase);
 			}
@@ -153,7 +178,8 @@ public class TextFieldPresentation extends AbstractSWTWidgetPresenter {
 		 * @return
 		 */
 		public boolean isLabelValid() {
-			return yText.getDatadescription() != null && yText.getDatadescription().getLabel() != null;
+			return yText.getDatadescription() != null
+					&& yText.getDatadescription().getLabel() != null;
 		}
 
 		/**

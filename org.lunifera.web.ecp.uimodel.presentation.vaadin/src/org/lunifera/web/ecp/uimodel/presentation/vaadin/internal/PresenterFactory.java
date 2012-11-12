@@ -14,6 +14,7 @@ import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiViewEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.context.IViewContext;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiGridLayoutEditpart;
+import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTableEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextFieldEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.presentation.IPresentationFactory;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.presentation.IWidgetPresentation;
@@ -27,22 +28,31 @@ public class PresenterFactory implements IPresentationFactory {
 	@Override
 	public boolean isFor(IViewContext uiContext, IUiElementEditpart editpart) {
 		String presentationURI = uiContext.getPresentationURI();
-		return presentationURI != null && presentationURI.equals(VaadinRenderer.UI_KIT_URI);
+		return presentationURI != null
+				&& presentationURI.equals(VaadinRenderer.UI_KIT_URI);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <A extends IWidgetPresentation<?>> A createPresentation(IViewContext uiContext, IUiElementEditpart editpart) {
+	public <A extends IWidgetPresentation<?>> A createPresentation(
+			IViewContext uiContext, IUiElementEditpart editpart) {
+		A presentation = null;
 		if (editpart instanceof IUiViewEditpart) {
-			return (A) new ViewPresentation((IUiViewEditpart) editpart);
+			presentation = (A) new ViewPresentation((IUiViewEditpart) editpart);
 		} else if (editpart instanceof IUiTextFieldEditpart) {
-			return (A) new TextFieldPresentation(editpart);
+			presentation = (A) new TextFieldPresentation(editpart);
 		} else if (editpart instanceof IUiGridLayoutEditpart) {
-			return (A) new GridLayoutPresentation(editpart);
+			presentation = (A) new GridLayoutPresentation(editpart);
+		} else if (editpart instanceof IUiTableEditpart) {
+			presentation = (A) new TablePresentation(editpart);
 		}
+		if (presentation == null) {
+			throw new IllegalArgumentException(String.format(
+					"No presenter available for editpart %s[%s]", editpart
+							.getClass().getName(), editpart.getId()));
+		}
+		uiContext.registerPresentation(editpart.getId(), presentation);
 
-		throw new IllegalArgumentException(String.format("No presenter available for editpart %s[%s]", editpart
-			.getClass().getName(), editpart.getId()));
+		return presentation;
 	}
-
 }

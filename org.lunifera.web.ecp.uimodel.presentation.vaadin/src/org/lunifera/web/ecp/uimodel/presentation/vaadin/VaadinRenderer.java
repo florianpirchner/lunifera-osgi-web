@@ -35,37 +35,55 @@ public class VaadinRenderer implements IRenderer {
 	/**
 	 * Renders the UI for the given componentContainer and UI model.
 	 * 
-	 * @param componentContainer The componentContainer the should be the parent for the rendered UI
-	 * @param yView The view model.
-	 * @param options rendering options
-	 * @throws ContextException e
+	 * @param componentContainer
+	 *            The componentContainer the should be the parent for the
+	 *            rendered UI
+	 * @param yView
+	 *            The view model.
+	 * @param options
+	 *            rendering options
+	 * @throws ContextException
+	 *             e
+	 * 
+	 * @return viewContext the prepared view context
 	 */
-	public void render(ComponentContainer componentContainer, YUiView yView, Map<String, Object> options)
-		throws ContextException {
-		IUiViewEditpart viewEditpart = DelegatingEditPartManager.getInstance().getEditpart(yView);
-		render(componentContainer, viewEditpart, options);
+	public IViewContext render(ComponentContainer componentContainer,
+			YUiView yView, Map<String, Object> options) throws ContextException {
+		IUiViewEditpart viewEditpart = DelegatingEditPartManager.getInstance()
+				.getEditpart(yView);
+		return render(componentContainer, viewEditpart, options);
 	}
 
 	/**
 	 * Renders the UI for the given componentContainer and edit part.
 	 * 
-	 * @param componentContainer The componentContainer the should be the parent for the rendered UI
-	 * @param viewEditpart The viewEditPart that should become rendered
-	 * @param options rendering options
-	 * @throws ContextException e
+	 * @param componentContainer
+	 *            The componentContainer the should be the parent for the
+	 *            rendered UI
+	 * @param viewEditpart
+	 *            The viewEditPart that should become rendered
+	 * @param options
+	 *            rendering options
+	 * @throws ContextException
+	 *             e
+	 * 
+	 * @return viewContext the prepared view context
 	 */
-	public void render(ComponentContainer componentContainer, IUiViewEditpart viewEditpart, Map<String, Object> options)
-		throws ContextException {
+	public IViewContext render(ComponentContainer componentContainer,
+			IUiViewEditpart viewEditpart, Map<String, Object> options)
+			throws ContextException {
 		ViewContext viewContext = new ViewContext(viewEditpart);
 		render(viewContext, componentContainer, options);
+
+		return viewContext;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void render(IViewContext viewContext, Object componentContainer, Map<String, Object> options)
-		throws ContextException {
+	public void render(IViewContext viewContext, Object componentContainer,
+			Map<String, Object> options) throws ContextException {
 		viewContext.render(UI_KIT_URI, componentContainer, options);
 	}
 

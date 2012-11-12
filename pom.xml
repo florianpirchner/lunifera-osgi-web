@@ -100,7 +100,7 @@
 				<module>org.lunifera.web.vaadin.contextlistener</module>
 				<module>org.lunifera.web.vaadin.widgetset</module>
 				<module>org.lunifera.web.vaadin.example</module>
-				<module>org.lunifera.web.vaadin.example.uimodelbridge</module>
+				<module>org.lunifera.web.vaadin.designstudy01.webui</module>
 				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
 				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin.example</module>
 				
@@ -133,7 +133,7 @@
 				<module>org.lunifera.web.vaadin.contextlistener</module>
 				<module>org.lunifera.web.vaadin.widgetset</module>
 				<module>org.lunifera.web.vaadin.example</module>
-				<module>org.lunifera.web.vaadin.example.uimodelbridge</module>
+				<module>org.lunifera.web.vaadin.designstudy01.webui</module>
 				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin</module>
 				<module>org.lunifera.web.ecp.uimodel.presentation.vaadin.example</module>
 				
@@ -320,7 +320,7 @@
 		<module>org.lunifera.web.vaadin.contextlistener</module>
 		<module>org.lunifera.web.vaadin.widgetset</module>
 		<module>org.lunifera.web.vaadin.example</module>
-		<module>org.lunifera.web.vaadin.example.uimodelbridge</module>
+		<module>org.lunifera.web.vaadin.designstudy01.webui</module>
 		<module>org.lunifera.web.feature.p2.target</module>
 		<module>org.lunifera.web.feature.vaadin</module>
 		<module>org.lunifera.web.feature.vaadin.uimodel</module>

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Shiro
-Bundle-SymbolicName: org.lunifera.web.vaadin;singleton:=true
+Bundle-SymbolicName: org.lunifera.web.vaadin.push;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: org.lunifera.web.vaadin.Activator
 Bundle-ActivationPolicy: lazy
@@ -14,14 +14,17 @@ Import-Package: org.apache.shiro.web.servlet;version="1.2.0",
  org.osgi.service.component;version="1.2.0",
  org.osgi.service.http;version="1.2.1",
  org.osgi.service.log;version="1.3.0",
- org.osgi.util.tracker;version="1.5.1"
+ org.osgi.util.tracker;version="1.5.1",
+ org.slf4j;version="1.6.4"
 Require-Bundle: javax.servlet;bundle-version="3.0.0";visibility:=reexport,
  com.vaadin.shared;bundle-version="7.0.0";visibility:=reexport,
  com.vaadin.server;bundle-version="7.0.0",
  com.vaadin.client-compiled;bundle-version="7.0.0",
- com.vaadin.themes;bundle-version="7.0.0"
+ com.vaadin.themes;bundle-version="7.0.0",
+ org.lunifera.web.vaadin.addon.icepush;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.lunifera.web.vaadin;x-internal:=true,
  org.lunifera.web.vaadin.common,
  org.lunifera.web.vaadin.servlet;x-internal:=true,
  org.lunifera.web.vaadin.webapp;x-internal:=true
+Bundle-ClassPath: .
