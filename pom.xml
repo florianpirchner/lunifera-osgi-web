@@ -338,6 +338,7 @@
 		<module>org.lunifera.web.vaadin.designstudy01.model</module>
 		<module>org.lunifera.web.vaadin.designstudy01.services</module>
 		<module>org.lunifera.web.vaadin.designstudy01.styles</module>
+		<module>org.lunifera.web.vaadin.designstudy01.ui</module>
 		<module>org.lunifera.web.vaadin.push</module>
 		<module>org.lunifera.web.vaadin.widgetset.push</module>
 	</modules>
