@@ -263,7 +263,7 @@ public class UiModelBridgeUI extends UI implements UI.CleanupListener,
 	private BeanItemContainer<IPerson> createContainer() {
 		BeanItemContainer<IPerson> personContainer = new BeanItemContainer<IPerson>(
 				IPerson.class);
-		if(service != null){
+		if (service != null) {
 			personContainer.addAll(service.getAll());
 		}
 		return personContainer;
@@ -318,8 +318,8 @@ public class UiModelBridgeUI extends UI implements UI.CleanupListener,
 			ymainLayout.setColumns(1);
 		}
 		ymainLayout.setSpacing(true);
-		ymainLayout.setPackContentHorizontal(false);
-		ymainLayout.setPackContentVertical(false);
+		ymainLayout.setFillHorizontal(true);
+		ymainLayout.setFillVertical(true);
 	}
 
 	@Override

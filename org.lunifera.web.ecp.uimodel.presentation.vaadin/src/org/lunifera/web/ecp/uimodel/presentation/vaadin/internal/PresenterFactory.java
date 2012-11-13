@@ -14,6 +14,7 @@ import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiViewEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.context.IViewContext;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiGridLayoutEditpart;
+import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiLabelEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTableEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextFieldEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.presentation.IPresentationFactory;
@@ -45,6 +46,8 @@ public class PresenterFactory implements IPresentationFactory {
 			presentation = (A) new GridLayoutPresentation(editpart);
 		} else if (editpart instanceof IUiTableEditpart) {
 			presentation = (A) new TablePresentation(editpart);
+		} else if (editpart instanceof IUiLabelEditpart) {
+			presentation = (A) new LabelPresentation(editpart);
 		}
 		if (presentation == null) {
 			throw new IllegalArgumentException(String.format(

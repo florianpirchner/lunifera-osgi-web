@@ -52,8 +52,8 @@ class Designstudy01Generator implements IGenerator {
 			val yMasterLayout = extfactory.createYUiGridLayout();
 			yMasterLayout.columns = 1
 			yMasterLayout.spacing=true
-			yMasterLayout.packContentHorizontal = true
-			yMasterLayout.packContentVertical = true
+			yMasterLayout.fillHorizontal = false
+			yMasterLayout.fillVertical = false
 			yContent.elements += yMasterLayout
 			
 			val masterCellstyle = extfactory.createYUiGridLayoutCellStyle
@@ -91,8 +91,8 @@ class Designstudy01Generator implements IGenerator {
 			yDetailLayout.columns = 1
 			yDetailLayout.margin=true
 			yDetailLayout.spacing=true
-			yDetailLayout.packContentHorizontal = false
-			yDetailLayout.packContentVertical = true
+			yDetailLayout.fillHorizontal = true
+			yDetailLayout.fillVertical = false
 			yContent.elements += yDetailLayout
 			
 			val detailCellstyle = extfactory.createYUiGridLayoutCellStyle
@@ -122,7 +122,9 @@ class Designstudy01Generator implements IGenerator {
 						val yTextField = extfactory.createYUiTextField
 						yDetailLayout.elements += yTextField
 						yTextField.datadescription=yDatadesc
-						yTextField.bindsTo = uiTextField.bindsTo.literal
+						if(uiTextField.bindsTo != null){
+							yTextField.bindsTo = uiTextField.bindsTo.name
+						}
 						// style
 						val textCellstyle = extfactory.createYUiGridLayoutCellStyle
 						textCellstyle.target = yTextField
@@ -159,8 +161,8 @@ class Designstudy01Generator implements IGenerator {
 	def void applyLayout(YUiGridLayout ymainLayout, boolean horizontal) {
 		ymainLayout.setColumns(5);
 		ymainLayout.setSpacing(true);
-		ymainLayout.setPackContentHorizontal(false);
-		ymainLayout.setPackContentVertical(false);
+		ymainLayout.setFillHorizontal(true);
+		ymainLayout.setFillVertical(true);
 	}
 
 }

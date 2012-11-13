@@ -168,13 +168,13 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 		// last row / column to grab excess space.
 		// If there is already a row / column that is expanded, we do not need
 		// to add a helper row
-		if (!expandVerticalFound && modelAccess.isPackContentVertical()) {
+		if (!expandVerticalFound && !modelAccess.isFillVertical()) {
 			int packingHelperRowIndex = gridlayout.getRows();
 			gridlayout.setRows(packingHelperRowIndex + 1);
 			gridlayout.setRowExpandRatio(packingHelperRowIndex, 1.0f);
 		}
 
-		if (!expandHorizontalFound && modelAccess.isPackContentHorizontal()) {
+		if (!expandHorizontalFound && !modelAccess.isFillHorizontal()) {
 			int packingHelperColumnIndex = gridlayout.getColumns();
 			gridlayout.setColumns(packingHelperColumnIndex + 1);
 			gridlayout.setColumnExpandRatio(packingHelperColumnIndex, 1.0f);
@@ -220,11 +220,11 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 			// use default
 			yAlignment = YUiAlignment.TOP_LEFT;
 
-			if (!modelAccess.isPackContentVertical()) {
+			if (modelAccess.isFillVertical()) {
 				// ensure that vertical alignment is FILL
 				yAlignment = mapToVerticalFill(yAlignment);
 			}
-			if (!modelAccess.isPackContentHorizontal()) {
+			if (modelAccess.isFillHorizontal()) {
 				// ensure that horizontal alignment is FILL
 				yAlignment = mapToHorizontalFill(yAlignment);
 			}
@@ -578,18 +578,18 @@ public class GridLayoutPresentation extends AbstractLayoutPresenter {
 
 		/**
 		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isPackContentHorizontal()
+		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isFillHorizontal()
 		 */
-		public boolean isPackContentHorizontal() {
-			return yLayout.isPackContentHorizontal();
+		public boolean isFillHorizontal() {
+			return yLayout.isFillHorizontal();
 		}
 
 		/**
 		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isPackContentVertical()
+		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout#isFillVertical()
 		 */
-		public boolean isPackContentVertical() {
-			return yLayout.isPackContentVertical();
+		public boolean isFillVertical() {
+			return yLayout.isFillVertical();
 		}
 	}
 

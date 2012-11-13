@@ -331,6 +331,15 @@
 			org.lunifera.web.feature.vaadin.example.uimodelbridge
 		</module>
 		<module>org.lunifera.web.feature.vaadin.designstudy01</module>
+		<module>org.lunifera.web.feature.vaadin.push</module>
+		<module>org.lunifera.web.vaadin.addon.icepush</module>
+		<module>org.lunifera.web.vaadin.designstudy01</module>
+		<module>org.lunifera.web.vaadin.designstudy01.api</module>
+		<module>org.lunifera.web.vaadin.designstudy01.model</module>
+		<module>org.lunifera.web.vaadin.designstudy01.services</module>
+		<module>org.lunifera.web.vaadin.designstudy01.styles</module>
+		<module>org.lunifera.web.vaadin.push</module>
+		<module>org.lunifera.web.vaadin.widgetset.push</module>
 	</modules>
 	<dependencies>
 		<dependency>

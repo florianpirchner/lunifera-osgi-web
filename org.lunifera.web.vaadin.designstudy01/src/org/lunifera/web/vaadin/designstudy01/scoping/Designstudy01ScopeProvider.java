@@ -3,15 +3,65 @@
  */
 package org.lunifera.web.vaadin.designstudy01.scoping;
 
+import java.util.ArrayList;
+
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.resource.EObjectDescription;
+import org.eclipse.xtext.resource.IEObjectDescription;
+import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
+import org.eclipse.xtext.scoping.impl.AbstractScope;
+import org.example.entitydsl.entityDSL.LEntity;
+import org.example.entitydsl.entityDSL.LEntityMember;
+import org.example.entitydsl.entityDSL.LProperty;
+import org.lunifera.web.vaadin.designstudy01.designstudy01.UiDetailPart;
+import org.lunifera.web.vaadin.designstudy01.designstudy01.UiMasterDetailTiles;
+import org.lunifera.web.vaadin.designstudy01.designstudy01.UiTextField;
+
+import com.google.inject.Inject;
 
 /**
  * This class contains custom scoping description.
  * 
- * see : http://www.eclipse.org/Xtext/documentation/latest/xtext.html#scoping
- * on how and when to use it 
- *
+ * see : http://www.eclipse.org/Xtext/documentation/latest/xtext.html#scoping on
+ * how and when to use it
+ * 
  */
-public class Designstudy01ScopeProvider extends AbstractDeclarativeScopeProvider {
+public class Designstudy01ScopeProvider extends
+		AbstractDeclarativeScopeProvider {
+
+	@Inject
+	IQualifiedNameProvider qualifiedNameProvider;
+
+	@Inject
+	IQualifiedNameConverter qualifiedNameConverter;
+
+	public IScope scope_UiTextField_bindsTo(final UiTextField context,
+			EReference ref) {
+		return new AbstractScope(IScope.NULLSCOPE, false) {
+			@Override
+			protected Iterable<IEObjectDescription> getAllLocalElements() {
+				ArrayList<IEObjectDescription> result = new ArrayList<IEObjectDescription>();
+				UiDetailPart part = (UiDetailPart) context.eContainer();
+				UiMasterDetailTiles tiles = (UiMasterDetailTiles) part
+						.eContainer();
+				LEntity bindsTo = tiles.getBindsTo();
+				if (bindsTo == null) {
+					return result;
+				}
+				for (LEntityMember member : bindsTo.getEntityMembers()) {
+					if (member instanceof LProperty) {
+						LProperty property = (LProperty) member;
+						result.add(new EObjectDescription(
+								qualifiedNameConverter.toQualifiedName(property
+										.getName()), property, null));
+					}
+				}
+				return result;
+			}
+		};
+	}
 
 }

@@ -1,13 +1,27 @@
 grammar org.lunifera.web.vaadin.designstudy01.Designstudy01 with org.eclipse.xtext.common.Terminals
 
 generate designstudy01 "http://www.lunifera.org/web/vaadin/designstudy01/Designstudy01"
+import "http://www.example.org/entitydsl/EntityDSL" as entity
 
 UiModel:
+	(imports+=Import)*
 	tiles=UiMasterDetailTiles;
+
+Import returns entity::LImport:
+	('import' importedNamespace=QualifiedNameWithWildCard);
+
+QualifiedNameWithWildCard:
+	Fqn ('.' '*')?;
+
+Fqn:
+	ValidID (=> '.' ValidID)*;
+
+ValidID:
+	ID;
 
 UiMasterDetailTiles:
 	{UiMasterDetailTiles}
-	'MasterDetailTiles' name=ID '{'
+	'MasterDetailTiles' name=ID 'binds to' bindsTo=[entity::LEntity|Fqn] '{'
 	('layout' '=' layout=UiLayoutType)?
 	((master=UiMasterPart)? &
 	(detail=UiDetailPart)?)
@@ -26,7 +40,7 @@ UiDetailPart:
 	{UiDetailPart}
 	'Detail' '{'
 	(('size' '=' layout=UiDetailSize)? &
-	 ('text align' '=' textAlign = UiTextAlignment)?)
+	('text align' '=' textAlign=UiTextAlignment)?)
 	(content+=UiSimpleField)*
 	'}';
 
@@ -43,29 +57,16 @@ UiSimpleField:
 	UiTextField;
 
 UiTable:
-	'Table' name=ID_ESC caption=STRING ('binds to' bindsTo=BindsToEntity)?;
+	'Table' name=ID caption=STRING;
 
 UiTextField:
-	'TextField' name=ID_ESC caption=STRING ('binds to' bindsTo=BindsToProperty)?;
-
-enum BindsToProperty:
-	AGE_LIT='age' | LASTNAME='lastName' | FIRSTNAME='firstName';
-
-enum BindsToEntity:
-	PERSON='Person';
-
-ID_ESC:
-	ID | 'age' | 'firstName' | 'lastName' | 'Person';
-
-LFQN:
-	ID ('.' ID)*;
+	'TextField' name=ID caption=STRING ('binds to' bindsTo=[entity::LProperty|Fqn])?;
 
 enum UiLayoutType:
 	HORIZONTAL='horizontal' | VERTICAL='vertical';
 
 enum UiDetailSize:
 	BIG='big' | SMALL='small';
-	
+
 enum UiTextAlignment:
-	FILL = "fill" | LEFT = "left" | CENTER = "center" | RIGHT = "right"
-;
+	FILL="fill" | LEFT="left" | CENTER="center" | RIGHT="right";

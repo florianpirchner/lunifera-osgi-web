@@ -56,13 +56,13 @@ public class Designstudy01Formatter extends AbstractDeclarativeFormatter {
 	private void configure(FormattingConfig config,
 			UiMasterDetailTilesElements ele) {
 		config.setLinewrap(1, 1, 2).around(ele.getRule());
-		config.setLinewrap(1, 1, 2).after(ele.getLeftCurlyBracketKeyword_3());
-		config.setLinewrap(1).before(ele.getRightCurlyBracketKeyword_6());
+		config.setLinewrap(1, 1, 2).after(ele.getLeftCurlyBracketKeyword_5());
+		config.setLinewrap(1).before(ele.getRightCurlyBracketKeyword_8());
 		// indentation
 		config.setIndentationIncrement().after(
-				ele.getLeftCurlyBracketKeyword_3());
+				ele.getLeftCurlyBracketKeyword_5());
 		config.setIndentationDecrement().before(
-				ele.getRightCurlyBracketKeyword_6());
+				ele.getRightCurlyBracketKeyword_8());
 	}
 
 	private void configure(FormattingConfig config, UiMasterPartElements ele) {
