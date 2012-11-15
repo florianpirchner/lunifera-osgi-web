@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="target" sequenceNumber="5">
+<target name="target" sequenceNumber="13">
 <locations>
+<location path="${project_loc}/plugins" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.persistence.sdk.feature.group" version="2.4.0.v20120613-r11652"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.8.0.v20120522-1841-7M7fA78g5_y-g-jtHxcd5k8q8lFR"/>
 <repository location="http://download.eclipse.org/releases/juno"/>
 </location>
 <location path="${eclipse_home}" type="Profile"/>
-<location path="${project_loc}/plugins" type="Directory"/>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.json" version="1.0.0.v201011060100"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository"/>
@@ -19,5 +19,10 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository"/>
 </location>
 <location path="${project_loc}/tpuimodel" type="Directory"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.persistence.sdk.feature.group" version="2.4.0.v20120613-r11652"/>
+<repository location="http://download.eclipse.org/releases/juno"/>
+</location>
+<location path="${project_loc}/riena" type="Directory"/>
 </locations>
 </target>

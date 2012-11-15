@@ -11,3 +11,5 @@ xtend-gen/
 plugin.xml_gen
 .project
 *org.lunifera.web.p2.target.juno/local
+*org.lunifera.web.p2.target.juno/riena
+*.jar

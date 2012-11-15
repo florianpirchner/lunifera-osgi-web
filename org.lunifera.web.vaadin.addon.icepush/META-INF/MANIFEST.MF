@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Icepush
 Bundle-SymbolicName: org.lunifera.web.vaadin.addon.icepush
 Bundle-Version: 1.0.0.qualifier
-Require-Bundle: org.eclipse.core.runtime,
- com.vaadin.server;bundle-version="7.0.0",
+Require-Bundle: com.vaadin.server;bundle-version="7.0.0",
  com.vaadin.shared;bundle-version="7.0.0",
  org.json;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy

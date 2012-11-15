@@ -341,6 +341,9 @@
 		<module>org.lunifera.web.vaadin.designstudy01.ui</module>
 		<module>org.lunifera.web.vaadin.push</module>
 		<module>org.lunifera.web.vaadin.widgetset.push</module>
+		<module>org.lunifera.web.vaadin.components</module>
+		<module>org.lunifera.web.vaadin.example.components</module>
+		<module>org.lunifera.web.example.vaadin.components</module>
 	</modules>
 	<dependencies>
 		<dependency>
