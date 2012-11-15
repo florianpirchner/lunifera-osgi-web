@@ -12,32 +12,42 @@
  *******************************************************************************/
 package org.lunifera.web.vaadin.components.converter;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import com.vaadin.data.util.converter.StringToDoubleConverter;
+import com.vaadin.data.util.converter.StringToIntegerConverter;
 
 /**
- * @author haglo
- * 
+ * A converter to format and parse Integer values.
  */
 @SuppressWarnings("serial")
-public class BasicConverter extends StringToDoubleConverter {
+public class NumberConverter extends StringToIntegerConverter {
 	private String numberFormatPattern;
+	private boolean useGrouping = true;
 	private DecimalFormatSymbols decimalFormatSymbols;
 
 	/**
+	 * Sets the number format pattern that should be used to format the number.
 	 * 
 	 * @param numberFormatPattern
 	 *            the numberFormatPattern to set
 	 */
 	public void setNumberFormatPattern(String numberFormatPattern) {
+
+		// cut of decimal point
+		if (numberFormatPattern.contains(".")) {
+			numberFormatPattern = numberFormatPattern.substring(0,
+					numberFormatPattern.indexOf("."));
+		}
 		this.numberFormatPattern = numberFormatPattern;
 	}
 
 	/**
+	 * Sets the {@link DecimalFormatSymbols} that should be used by the
+	 * formatter.
 	 * 
 	 * @param decimalFormatSymbols
 	 *            the decimalFormatSymbols to set
@@ -45,6 +55,24 @@ public class BasicConverter extends StringToDoubleConverter {
 	public void setDecimalFormatSymbols(
 			DecimalFormatSymbols decimalFormatSymbols) {
 		this.decimalFormatSymbols = decimalFormatSymbols;
+	}
+
+	/**
+	 * If true, then grouping should be used. False otherwise. Default is true.
+	 * 
+	 * @return
+	 */
+	public boolean isUseGrouping() {
+		return useGrouping;
+	}
+
+	/**
+	 * If true, then grouping should be used. False otherwise. Default is true.
+	 * 
+	 * @param useGrouping
+	 */
+	public void setUseGrouping(boolean useGrouping) {
+		this.useGrouping = useGrouping;
 	}
 
 	protected NumberFormat getFormat(Locale locale) {
@@ -64,6 +92,11 @@ public class BasicConverter extends StringToDoubleConverter {
 		} else {
 			result = NumberFormat.getNumberInstance(locale);
 		}
+
+		result.setGroupingUsed(useGrouping);
+		result.setRoundingMode(RoundingMode.HALF_EVEN);
+		result.setParseIntegerOnly(true);
+
 		return result;
 	}
 }

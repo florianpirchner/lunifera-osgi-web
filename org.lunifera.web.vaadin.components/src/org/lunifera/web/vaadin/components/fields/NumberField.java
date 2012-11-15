@@ -12,49 +12,87 @@
  *******************************************************************************/
 package org.lunifera.web.vaadin.components.fields;
 
-import com.vaadin.data.Property;
+import java.text.DecimalFormatSymbols;
+
+import org.lunifera.web.vaadin.components.converter.NumberConverter;
 
 /**
  * A numericfield specific for redvoodo.
  */
 @SuppressWarnings("serial")
 public class NumberField extends TextField {
-	
-	private boolean negativAllowed;
+
+	private final NumberConverter converter;
 
 	public NumberField() {
-		super();
-	}
-
-	public NumberField(Property<String> dataSource) {
-		super(dataSource);
-	}
-
-	public NumberField(String caption, Property<String> dataSource) {
-		super(caption, dataSource);
-	}
-
-	public NumberField(String caption, String value) {
-		super(caption, value);
+		this(null);
 	}
 
 	public NumberField(String caption) {
+		this(caption, null);
+	}
+
+	public NumberField(String caption, NumberConverter converter) {
 		super(caption);
+
+		setNullRepresentation("");
+		setNullSettingAllowed(false);
+
+		// Important: Is responsible that the Converter is used in the Field
+		this.converter = converter != null ? converter : createConverter();
+		setConverter(this.converter);
 	}
 
 	/**
-	 * @return the negativAllowed
+	 * Creates a default converter.
+	 * 
+	 * @return
 	 */
-	public boolean isNegativAllowed() {
-		return negativAllowed;
+	protected NumberConverter createConverter() {
+		return new NumberConverter();
 	}
 
 	/**
-	 * @param negativAllowed the negativAllowed to set
+	 * Sets the number format to be used.
+	 * 
+	 * @param numberFormatPattern
+	 *            the numberFormat to set
 	 */
-	public void setNegativAllowed(boolean negativAllowed) {
-		this.negativAllowed = negativAllowed;
-	}
-	
+	public void setNumberFormatPattern(String numberFormatPattern) {
+		converter.setNumberFormatPattern(numberFormatPattern);
 
+		markAsDirty();
+	}
+
+	/**
+	 * Sets the Symbols which are used to Format.
+	 * 
+	 * @param decimalFormatSymbols
+	 */
+	public void setDecimalFormatSymbols(
+			DecimalFormatSymbols decimalFormatSymbols) {
+		converter.setDecimalFormatSymbols(decimalFormatSymbols);
+
+		markAsDirty();
+	}
+
+	/**
+	 * Returns true, if grouping is used. False otherwise.
+	 * 
+	 * @return
+	 */
+	public boolean isUseGrouping() {
+		return converter.isUseGrouping();
+	}
+
+	/**
+	 * Set true, if grouping should be used. False otherwise.
+	 * 
+	 * @param useGrouping
+	 */
+	public void setUseGrouping(boolean useGrouping) {
+		converter.setUseGrouping(useGrouping);
+
+		markAsDirty();
+	}
 }

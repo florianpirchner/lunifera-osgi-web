@@ -12,10 +12,7 @@
  *******************************************************************************/
 package org.lunifera.web.ecp.uimodel.presentation.vaadin.example;
 
-import org.eclipse.emf.ecp.ui.model.core.datatypes.YCheckBoxDDesc;
-import org.eclipse.emf.ecp.ui.model.core.datatypes.YLabelDDesc;
-import org.eclipse.emf.ecp.ui.model.core.datatypes.YTextAreaDDesc;
-import org.eclipse.emf.ecp.ui.model.core.datatypes.YTextDDesc;
+import org.eclipse.emf.ecp.ui.model.core.datatypes.YDatadescription;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.YUiEmbeddable;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.YUiView;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiAlignment;
@@ -90,7 +87,7 @@ public class UiModelDemoUI extends UI {
 	protected YUiTextField newText(String label) {
 		YUiTextField field = factory.createTextField();
 		if (label != null) {
-			YTextDDesc dtd = factory.createTextDatadescription();
+			YDatadescription dtd = factory.createDatadescription();
 			field.setDatadescription(dtd);
 			dtd.setLabel(label);
 		}
@@ -107,7 +104,7 @@ public class UiModelDemoUI extends UI {
 	protected YUiCheckBox newCheckBox(String label) {
 		YUiCheckBox field = factory.createCheckBox();
 		if (label != null) {
-			YCheckBoxDDesc dtd = factory.createCheckBoxDatadescription();
+			YDatadescription dtd = factory.createDatadescription();
 			field.setDatadescription(dtd);
 			dtd.setLabel(label);
 		}
@@ -124,7 +121,7 @@ public class UiModelDemoUI extends UI {
 	protected YUiTextArea newTextArea(String label) {
 		YUiTextArea field = factory.createTextArea();
 		if (label != null) {
-			YTextAreaDDesc dtd = factory.createTextAreaDatadescription();
+			YDatadescription dtd = factory.createDatadescription();
 			field.setDatadescription(dtd);
 			dtd.setLabel(label);
 		}
@@ -141,7 +138,7 @@ public class UiModelDemoUI extends UI {
 	protected YUiLabel newLabel(String label) {
 		YUiLabel field = factory.createLabel();
 		if (label != null) {
-			YLabelDDesc dtd = factory.createLabelDatadescription();
+			YDatadescription dtd = factory.createDatadescription();
 			field.setDatadescription(dtd);
 			dtd.setLabel(label);
 		}

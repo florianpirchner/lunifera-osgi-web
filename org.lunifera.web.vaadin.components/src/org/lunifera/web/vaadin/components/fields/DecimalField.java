@@ -14,44 +14,42 @@ package org.lunifera.web.vaadin.components.fields;
 
 import java.text.DecimalFormatSymbols;
 
-import org.lunifera.web.vaadin.components.converter.BasicConverter;
+import org.lunifera.web.vaadin.components.converter.DecimalConverter;
 
 /**
  * A decimalfield specific for redvoodo.
- * 
- * @author haglo
- * 
  */
 @SuppressWarnings("serial")
-public class DecimalField extends NumberField {
+public class DecimalField extends TextField {
 
-	private final BasicConverter basicConverter = new BasicConverter();
+	private final DecimalConverter converter;
 
 	public DecimalField() {
 		this(null);
 	}
 
 	public DecimalField(String caption) {
+		this(caption, null);
+	}
+
+	public DecimalField(String caption, DecimalConverter converter) {
 		super(caption);
 
+		setNullRepresentation("");
+		setNullSettingAllowed(false);
+
 		// Important: Is responsible that the Converter is used in the Field
-		setConverter(basicConverter);
+		this.converter = converter != null ? converter : createConverter();
+		setConverter(this.converter);
 	}
 
 	/**
-	 * @param nullAllowed
-	 *            the nullAllowed to set
+	 * Creates a default converter.
+	 * 
+	 * @return
 	 */
-	public void setNullSettingAllowed(boolean nullAllowed) {
-		super.setNullSettingAllowed(nullAllowed);
-	}
-
-	/**
-	 * @param nullRepresentation
-	 *            the nullRepresentation to set
-	 */
-	public void setNullRepresentation(String nullRepresentation) {
-		super.setNullRepresentation(nullRepresentation);
+	protected DecimalConverter createConverter() {
+		return new DecimalConverter();
 	}
 
 	/**
@@ -61,7 +59,7 @@ public class DecimalField extends NumberField {
 	 *            the numberFormat to set
 	 */
 	public void setNumberFormatPattern(String numberFormatPattern) {
-		basicConverter.setNumberFormatPattern(numberFormatPattern);
+		converter.setNumberFormatPattern(numberFormatPattern);
 
 		markAsDirty();
 	}
@@ -73,9 +71,28 @@ public class DecimalField extends NumberField {
 	 */
 	public void setDecimalFormatSymbols(
 			DecimalFormatSymbols decimalFormatSymbols) {
-		basicConverter.setDecimalFormatSymbols(decimalFormatSymbols);
+		converter.setDecimalFormatSymbols(decimalFormatSymbols);
 
 		markAsDirty();
 	}
 
+	/**
+	 * Returns true, if grouping is used. False otherwise.
+	 * 
+	 * @return
+	 */
+	public boolean isUseGrouping() {
+		return converter.isUseGrouping();
+	}
+
+	/**
+	 * Set true, if grouping should be used. False otherwise.
+	 * 
+	 * @param useGrouping
+	 */
+	public void setUseGrouping(boolean useGrouping) {
+		converter.setUseGrouping(useGrouping);
+
+		markAsDirty();
+	}
 }
