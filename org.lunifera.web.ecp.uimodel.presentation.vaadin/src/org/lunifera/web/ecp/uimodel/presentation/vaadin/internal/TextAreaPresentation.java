@@ -24,7 +24,7 @@ import com.vaadin.ui.TextArea;
  */
 public class TextAreaPresentation extends AbstractFieldPresenter {
 
-	private final ModelAccess modelAccess;
+	private final YUiTextArea yTextArea;
 	private CssLayout componentBase;
 	private TextArea textArea;
 
@@ -36,7 +36,7 @@ public class TextAreaPresentation extends AbstractFieldPresenter {
 	 */
 	public TextAreaPresentation(IUiElementEditpart editpart) {
 		super((IUiTextAreaEditpart) editpart);
-		this.modelAccess = new ModelAccess((YUiTextArea) editpart.getModel());
+		this.yTextArea = (YUiTextArea) editpart.getModel();
 	}
 
 	/**
@@ -47,8 +47,8 @@ public class TextAreaPresentation extends AbstractFieldPresenter {
 		if (componentBase == null) {
 			componentBase = new CssLayout();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-			if (modelAccess.isCssIdValid()) {
-				componentBase.setId(modelAccess.getCssID());
+			if (Util.isCssIdValid(yTextArea)) {
+				componentBase.setId(Util.getCssID(yTextArea));
 			} else {
 				componentBase.setId(getEditpart().getId());
 			}
@@ -60,12 +60,13 @@ public class TextAreaPresentation extends AbstractFieldPresenter {
 			textArea.setNullSettingAllowed(true);
 			componentBase.addComponent(textArea);
 
-			if (modelAccess.isCssClassValid()) {
-				textArea.addStyleName(modelAccess.getCssClass());
+			if (Util.isCssClassValid(yTextArea)) {
+				textArea.addStyleName(Util.getCssClass(yTextArea));
 			}
 
-			if (modelAccess.isLabelValid()) {
-				textArea.setCaption(modelAccess.getLabel());
+			if (Util.isLabelValid(yTextArea.getDatadescription())) {
+				textArea.setCaption(Util.getLabel(yTextArea
+						.getDatadescription()));
 			}
 		}
 		return componentBase;
@@ -104,70 +105,5 @@ public class TextAreaPresentation extends AbstractFieldPresenter {
 	protected void internalDispose() {
 		// unrender the ui component
 		unrender();
-	}
-
-	/**
-	 * A helper class.
-	 */
-	private static class ModelAccess {
-		private final YUiTextArea yText;
-
-		public ModelAccess(YUiTextArea yText) {
-			super();
-			this.yText = yText;
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssClass()
-		 */
-		public String getCssClass() {
-			return yText.getCssClass();
-		}
-
-		/**
-		 * Returns true, if the css class is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssClassValid() {
-			return getCssClass() != null && !getCssClass().equals("");
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssID()
-		 */
-		public String getCssID() {
-			return yText.getCssID();
-		}
-
-		/**
-		 * Returns true, if the css id is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssIdValid() {
-			return getCssID() != null && !getCssID().equals("");
-		}
-
-		/**
-		 * Returns true, if the label is valid.
-		 * 
-		 * @return
-		 */
-		public boolean isLabelValid() {
-			return yText.getDatadescription() != null
-					&& yText.getDatadescription().getLabel() != null;
-		}
-
-		/**
-		 * Returns the label.
-		 * 
-		 * @return
-		 */
-		public String getLabel() {
-			return yText.getDatadescription().getLabel();
-		}
 	}
 }

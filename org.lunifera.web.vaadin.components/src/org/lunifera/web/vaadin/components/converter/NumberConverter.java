@@ -89,13 +89,14 @@ public class NumberConverter extends StringToIntegerConverter {
 				result = new DecimalFormat(numberFormatPattern,
 						new DecimalFormatSymbols(locale));
 			}
+
+			result.setRoundingMode(RoundingMode.HALF_EVEN);
+			result.setParseIntegerOnly(true);
 		} else {
-			result = NumberFormat.getNumberInstance(locale);
+			result = NumberFormat.getIntegerInstance(locale);
 		}
 
 		result.setGroupingUsed(useGrouping);
-		result.setRoundingMode(RoundingMode.HALF_EVEN);
-		result.setParseIntegerOnly(true);
 
 		return result;
 	}

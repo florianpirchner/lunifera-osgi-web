@@ -13,7 +13,6 @@ package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiTable;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTableEditpart;
-import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextFieldEditpart;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
@@ -25,7 +24,7 @@ import com.vaadin.ui.Table;
  */
 public class TablePresentation extends AbstractFieldPresenter {
 
-	private final ModelAccess modelAccess;
+	private final YUiTable yTable;
 	private CssLayout componentBase;
 	private Table table;
 
@@ -37,7 +36,7 @@ public class TablePresentation extends AbstractFieldPresenter {
 	 */
 	public TablePresentation(IUiElementEditpart editpart) {
 		super((IUiTableEditpart) editpart);
-		this.modelAccess = new ModelAccess((YUiTable) editpart.getModel());
+		this.yTable = (YUiTable) editpart.getModel();
 	}
 
 	/**
@@ -48,8 +47,8 @@ public class TablePresentation extends AbstractFieldPresenter {
 		if (componentBase == null) {
 			componentBase = new CssLayout();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-			if (modelAccess.isCssIdValid()) {
-				componentBase.setId(modelAccess.getCssID());
+			if (Util.isCssIdValid(yTable)) {
+				componentBase.setId(Util.getCssID(yTable));
 			} else {
 				componentBase.setId(getEditpart().getId());
 			}
@@ -59,13 +58,13 @@ public class TablePresentation extends AbstractFieldPresenter {
 			table.setSizeFull();
 			componentBase.addComponent(table);
 
-			if (modelAccess.isCssClassValid()) {
-				table.addStyleName(modelAccess.getCssClass());
+			if (Util.isCssClassValid(yTable)) {
+				table.addStyleName(Util.getCssClass(yTable));
 			}
 
-			// if (modelAccess.isLabelValid()) {
-			// table.setCaption(modelAccess.getLabel());
-			// }
+			if (Util.isLabelValid(yTable.getDatadescription())) {
+				table.setCaption(Util.getLabel(yTable.getDatadescription()));
+			}
 		}
 		return componentBase;
 	}
@@ -103,70 +102,5 @@ public class TablePresentation extends AbstractFieldPresenter {
 	protected void internalDispose() {
 		// unrender the ui component
 		unrender();
-	}
-
-	/**
-	 * A helper class.
-	 */
-	private static class ModelAccess {
-		private final YUiTable yTable;
-
-		public ModelAccess(YUiTable yTable) {
-			super();
-			this.yTable = yTable;
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssClass()
-		 */
-		public String getCssClass() {
-			return yTable.getCssClass();
-		}
-
-		/**
-		 * Returns true, if the css class is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssClassValid() {
-			return getCssClass() != null && !getCssClass().equals("");
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssID()
-		 */
-		public String getCssID() {
-			return yTable.getCssID();
-		}
-
-		/**
-		 * Returns true, if the css id is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssIdValid() {
-			return getCssID() != null && !getCssID().equals("");
-		}
-
-//		/**
-//		 * Returns true, if the label is valid.
-//		 * 
-//		 * @return
-//		 */
-//		public boolean isLabelValid() {
-//			return yTable.getDatadescription() != null
-//					&& yTable.getDatadescription().getLabel() != null;
-//		}
-//
-//		/**
-//		 * Returns the label.
-//		 * 
-//		 * @return
-//		 */
-//		public String getLabel() {
-//			return yTable.getDatadescription().getLabel();
-//		}
 	}
 }

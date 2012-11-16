@@ -10,6 +10,7 @@
  */
 package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 
+import org.eclipse.emf.ecp.ui.model.core.datatypes.YNumericDatatype;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiNumericField;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiNumericFieldEditpart;
@@ -65,10 +66,23 @@ public class NumericFieldPresentation extends AbstractFieldPresenter {
 				numberField.addStyleName(Util.getCssClass(yNumericField));
 			}
 
-			if (isLabelValid()) {
-				numberField.setCaption(getLabel());
+			if (Util.isLabelValid(yNumericField.getDatadescription())) {
+				numberField.setCaption(Util.getLabel(yNumericField
+						.getDatadescription()));
 			}
-			
+
+			YNumericDatatype datatype = yNumericField.getDatatype();
+			if (datatype != null) {
+				numberField.setUseGrouping(datatype.isGrouping());
+				numberField.setUseGrouping(datatype.isMarkNegative());
+
+				if (datatype.getFormatPattern() != null
+						&& !datatype.getFormatPattern().equals("")) {
+					numberField.setNumberFormatPattern(datatype
+							.getFormatPattern());
+				}
+			}
+
 		}
 		return componentBase;
 	}
@@ -81,25 +95,6 @@ public class NumericFieldPresentation extends AbstractFieldPresenter {
 	@Override
 	public boolean isRendered() {
 		return componentBase != null;
-	}
-
-	/**
-	 * Returns true, if the label is valid.
-	 * 
-	 * @return
-	 */
-	public boolean isLabelValid() {
-		return yNumericField.getDatadescription() != null
-				&& yNumericField.getDatadescription().getLabel() != null;
-	}
-
-	/**
-	 * Returns the label.
-	 * 
-	 * @return
-	 */
-	public String getLabel() {
-		return yNumericField.getDatadescription().getLabel();
 	}
 
 	/**

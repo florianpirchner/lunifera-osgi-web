@@ -10,11 +10,15 @@
  */
 package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 
+import org.eclipse.emf.ecp.ui.model.core.datatypes.YDatadescription;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiInput;
 
 public class Util {
 
 	/**
+	 * Returns the css class.
+	 * 
+	 * @param yInput
 	 * @return
 	 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssClass()
 	 */
@@ -25,6 +29,8 @@ public class Util {
 	/**
 	 * Returns true, if the css class is not null and not empty.
 	 * 
+	 * @param yInput
+	 * 
 	 * @return
 	 */
 	public static boolean isCssClassValid(YUiInput yInput) {
@@ -32,6 +38,9 @@ public class Util {
 	}
 
 	/**
+	 * Returns the css id.
+	 * 
+	 * @param yInput
 	 * @return
 	 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssID()
 	 */
@@ -42,9 +51,33 @@ public class Util {
 	/**
 	 * Returns true, if the css id is not null and not empty.
 	 * 
+	 * @param yInput
+	 * 
 	 * @return
 	 */
 	public static boolean isCssIdValid(YUiInput yInput) {
 		return getCssID(yInput) != null && !getCssID(yInput).equals("");
+	}
+
+	/**
+	 * Returns true, if the label is valid.
+	 * 
+	 * @param yDatadescription
+	 * 
+	 * @return
+	 */
+	public static boolean isLabelValid(YDatadescription yDatadescription) {
+		return yDatadescription != null && yDatadescription.getLabel() != null;
+	}
+
+	/**
+	 * Returns the label.
+	 * 
+	 * @param yDatadescription
+	 * 
+	 * @return
+	 */
+	public static String getLabel(YDatadescription yDatadescription) {
+		return yDatadescription.getLabel();
 	}
 }

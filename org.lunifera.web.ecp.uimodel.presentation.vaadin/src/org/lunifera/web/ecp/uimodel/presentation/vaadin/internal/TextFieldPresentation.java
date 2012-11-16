@@ -10,28 +10,21 @@
  */
 package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiTextField;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextFieldEditpart;
-import org.eclipse.emf.ecp.ui.uimodel.core.editparts.internal.beans.ObjectBean;
 
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 
 /**
  * This presenter is responsible to render a text field on the given layout.
  */
-public class TextFieldPresentation extends AbstractFieldPresenter implements
-		PropertyChangeListener {
+public class TextFieldPresentation extends AbstractFieldPresenter {
 
-	private final ModelAccess modelAccess;
+	private final YUiTextField yTextField;
 	private CssLayout componentBase;
 	private TextField text;
 
@@ -41,24 +34,9 @@ public class TextFieldPresentation extends AbstractFieldPresenter implements
 	 * @param editpart
 	 *            The editpart of that presenter
 	 */
-	@SuppressWarnings("restriction")
 	public TextFieldPresentation(IUiElementEditpart editpart) {
 		super((IUiTextFieldEditpart) editpart);
-		this.modelAccess = new ModelAccess((YUiTextField) editpart.getModel());
-
-		// TODO make generic
-		ObjectBean valueBean = (ObjectBean) getEditpart().getView()
-				.getContext().getValueBean("master");
-		valueBean.addPropertyChangeListener(this);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent event) {
-		BeanItem<?> item = new BeanItem(event.getNewValue());
-		if (text != null) {
-			text.setPropertyDataSource(item.getItemProperty(modelAccess.yText
-					.getBindsTo()));
-		}
+		this.yTextField = (YUiTextField) editpart.getModel();
 	}
 
 	/**
@@ -69,8 +47,8 @@ public class TextFieldPresentation extends AbstractFieldPresenter implements
 		if (componentBase == null) {
 			componentBase = new CssLayout();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-			if (modelAccess.isCssIdValid()) {
-				componentBase.setId(modelAccess.getCssID());
+			if (Util.isCssIdValid(yTextField)) {
+				componentBase.setId(Util.getCssID(yTextField));
 			} else {
 				componentBase.setId(getEditpart().getId());
 			}
@@ -82,12 +60,12 @@ public class TextFieldPresentation extends AbstractFieldPresenter implements
 			text.setNullSettingAllowed(true);
 			componentBase.addComponent(text);
 
-			if (modelAccess.isCssClassValid()) {
-				text.addStyleName(modelAccess.getCssClass());
+			if (Util.isCssClassValid(yTextField)) {
+				text.addStyleName(Util.getCssClass(yTextField));
 			}
 
-			if (modelAccess.isLabelValid()) {
-				text.setCaption(modelAccess.getLabel());
+			if (Util.isLabelValid(yTextField.getDatadescription())) {
+				text.setCaption(Util.getLabel(yTextField.getDatadescription()));
 			}
 		}
 		return componentBase;
@@ -126,70 +104,5 @@ public class TextFieldPresentation extends AbstractFieldPresenter implements
 	protected void internalDispose() {
 		// unrender the ui component
 		unrender();
-	}
-
-	/**
-	 * A helper class.
-	 */
-	private static class ModelAccess {
-		private final YUiTextField yText;
-
-		public ModelAccess(YUiTextField yText) {
-			super();
-			this.yText = yText;
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssClass()
-		 */
-		public String getCssClass() {
-			return yText.getCssClass();
-		}
-
-		/**
-		 * Returns true, if the css class is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssClassValid() {
-			return getCssClass() != null && !getCssClass().equals("");
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssID()
-		 */
-		public String getCssID() {
-			return yText.getCssID();
-		}
-
-		/**
-		 * Returns true, if the css id is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssIdValid() {
-			return getCssID() != null && !getCssID().equals("");
-		}
-
-		/**
-		 * Returns true, if the label is valid.
-		 * 
-		 * @return
-		 */
-		public boolean isLabelValid() {
-			return yText.getDatadescription() != null
-					&& yText.getDatadescription().getLabel() != null;
-		}
-
-		/**
-		 * Returns the label.
-		 * 
-		 * @return
-		 */
-		public String getLabel() {
-			return yText.getDatadescription().getLabel();
-		}
 	}
 }
