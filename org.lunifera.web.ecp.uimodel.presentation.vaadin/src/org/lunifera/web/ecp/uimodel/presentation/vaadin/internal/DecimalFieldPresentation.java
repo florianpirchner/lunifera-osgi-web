@@ -10,23 +10,24 @@
  */
 package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 
-import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiTextArea;
+import org.eclipse.emf.ecp.ui.model.core.datatypes.YDecimalDatatype;
+import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiDecimalField;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
-import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextAreaEditpart;
+import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiNumericFieldEditpart;
+import org.lunifera.web.vaadin.components.fields.DecimalField;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.TextArea;
 
 /**
- * This presenter is responsible to render a textArea field on the given layout.
+ * This presenter is responsible to render a text field on the given layout.
  */
-public class TextAreaPresentation extends AbstractFieldPresenter {
+public class DecimalFieldPresentation extends AbstractFieldPresenter {
 
-	private final YUiTextArea yTextArea;
+	private final YUiDecimalField yDecimalField;
 	private CssLayout componentBase;
-	private TextArea textArea;
+	private DecimalField decimalField;
 
 	/**
 	 * Constructor.
@@ -34,9 +35,9 @@ public class TextAreaPresentation extends AbstractFieldPresenter {
 	 * @param editpart
 	 *            The editpart of that presenter
 	 */
-	public TextAreaPresentation(IUiElementEditpart editpart) {
-		super((IUiTextAreaEditpart) editpart);
-		this.yTextArea = (YUiTextArea) editpart.getModel();
+	public DecimalFieldPresentation(IUiElementEditpart editpart) {
+		super((IUiNumericFieldEditpart) editpart);
+		this.yDecimalField = (YUiDecimalField) editpart.getModel();
 	}
 
 	/**
@@ -47,30 +48,37 @@ public class TextAreaPresentation extends AbstractFieldPresenter {
 		if (componentBase == null) {
 			componentBase = new CssLayout();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-			if (Util.isCssIdValid(yTextArea)) {
-				componentBase.setId(Util.getCssID(yTextArea));
+			if (Util.isCssIdValid(yDecimalField)) {
+				componentBase.setId(Util.getCssID(yDecimalField));
 			} else {
 				componentBase.setId(getEditpart().getId());
 			}
 
-			textArea = new TextArea();
-			textArea.addStyleName(CSS_CLASS__CONTROL);
-			textArea.setSizeFull();
-			textArea.setNullRepresentation("");
-			textArea.setNullSettingAllowed(true);
-			componentBase.addComponent(textArea);
+			decimalField = new DecimalField();
+			decimalField.addStyleName(CSS_CLASS__CONTROL);
+			decimalField.setSizeFull();
+			decimalField.setNullRepresentation("");
+			decimalField.setNullSettingAllowed(true);
+			componentBase.addComponent(decimalField);
 
-			if (Util.isCssClassValid(yTextArea)) {
-				textArea.addStyleName(Util.getCssClass(yTextArea));
+			if (Util.isCssClassValid(yDecimalField)) {
+				decimalField.addStyleName(Util.getCssClass(yDecimalField));
 			}
 
-			if (Util.isLabelValid(yTextArea.getDatadescription())) {
-				textArea.setCaption(Util.getLabel(yTextArea
+			if (Util.isLabelValid(yDecimalField.getDatadescription())) {
+				decimalField.setCaption(Util.getLabel(yDecimalField
 						.getDatadescription()));
 			}
 
 			// applies the input properties
-			Util.applyInputProperties(textArea, yTextArea);
+			Util.applyInputProperties(decimalField, yDecimalField);
+
+			YDecimalDatatype datatype = yDecimalField.getDatatype();
+			if (datatype != null) {
+				decimalField.setUseGrouping(datatype.isGrouping());
+				decimalField.setMarkNegative(datatype.isMarkNegative());
+				decimalField.setPrecision(datatype.getPrecision());
+			}
 		}
 		return componentBase;
 	}
@@ -97,7 +105,7 @@ public class TextAreaPresentation extends AbstractFieldPresenter {
 				parent.removeComponent(componentBase);
 			}
 			componentBase = null;
-			textArea = null;
+			decimalField = null;
 		}
 	}
 

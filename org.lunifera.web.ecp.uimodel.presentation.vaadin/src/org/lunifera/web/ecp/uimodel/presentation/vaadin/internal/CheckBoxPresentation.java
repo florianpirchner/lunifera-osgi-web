@@ -24,7 +24,7 @@ import com.vaadin.ui.CssLayout;
  */
 public class CheckBoxPresentation extends AbstractFieldPresenter {
 
-	private final ModelAccess modelAccess;
+	private final YUiCheckBox yCheckBox;
 	private CssLayout componentBase;
 	private CheckBox checkbox;
 
@@ -36,7 +36,7 @@ public class CheckBoxPresentation extends AbstractFieldPresenter {
 	 */
 	public CheckBoxPresentation(IUiElementEditpart editpart) {
 		super((IUiCheckboxEditpart) editpart);
-		this.modelAccess = new ModelAccess((YUiCheckBox) editpart.getModel());
+		this.yCheckBox = (YUiCheckBox) editpart.getModel();
 	}
 
 	/**
@@ -47,8 +47,8 @@ public class CheckBoxPresentation extends AbstractFieldPresenter {
 		if (componentBase == null) {
 			componentBase = new CssLayout();
 			componentBase.addStyleName(CSS_CLASS__CONTROL_BASE);
-			if (modelAccess.isCssIdValid()) {
-				componentBase.setId(modelAccess.getCssID());
+			if (Util.isCssIdValid(yCheckBox)) {
+				componentBase.setId(Util.getCssID(yCheckBox));
 			} else {
 				componentBase.setId(getEditpart().getId());
 			}
@@ -57,13 +57,17 @@ public class CheckBoxPresentation extends AbstractFieldPresenter {
 			checkbox.addStyleName(CSS_CLASS__CONTROL);
 			componentBase.addComponent(checkbox);
 
-			if (modelAccess.isCssClassValid()) {
-				checkbox.addStyleName(modelAccess.getCssClass());
+			if (Util.isCssClassValid(yCheckBox)) {
+				checkbox.addStyleName(Util.getCssClass(yCheckBox));
 			}
 
-			if (modelAccess.isLabelValid()) {
-				checkbox.setCaption(modelAccess.getLabel());
+			if (Util.isLabelValid(yCheckBox.getDatadescription())) {
+				checkbox.setCaption(Util.getLabel(yCheckBox
+						.getDatadescription()));
 			}
+
+			// applies the input properties
+			Util.applyInputProperties(checkbox, yCheckBox);
 		}
 		return componentBase;
 	}
@@ -101,70 +105,5 @@ public class CheckBoxPresentation extends AbstractFieldPresenter {
 	protected void internalDispose() {
 		// unrender the ui component
 		unrender();
-	}
-
-	/**
-	 * A helper class.
-	 */
-	private static class ModelAccess {
-		private final YUiCheckBox yCheckBox;
-
-		public ModelAccess(YUiCheckBox yCheckBox) {
-			super();
-			this.yCheckBox = yCheckBox;
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssClass()
-		 */
-		public String getCssClass() {
-			return yCheckBox.getCssClass();
-		}
-
-		/**
-		 * Returns true, if the css class is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssClassValid() {
-			return getCssClass() != null && !getCssClass().equals("");
-		}
-
-		/**
-		 * @return
-		 * @see org.eclipse.emf.ecp.ui.model.core.uimodel.YUiCssAble#getCssID()
-		 */
-		public String getCssID() {
-			return yCheckBox.getCssID();
-		}
-
-		/**
-		 * Returns true, if the css id is not null and not empty.
-		 * 
-		 * @return
-		 */
-		public boolean isCssIdValid() {
-			return getCssID() != null && !getCssID().equals("");
-		}
-
-		/**
-		 * Returns true, if the label is valid.
-		 * 
-		 * @return
-		 */
-		public boolean isLabelValid() {
-			return yCheckBox.getDatadescription() != null
-					&& yCheckBox.getDatadescription().getLabel() != null;
-		}
-
-		/**
-		 * Returns the label.
-		 * 
-		 * @return
-		 */
-		public String getLabel() {
-			return yCheckBox.getDatadescription().getLabel();
-		}
 	}
 }

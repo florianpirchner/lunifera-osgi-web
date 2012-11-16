@@ -26,8 +26,41 @@ import com.vaadin.data.util.converter.StringToIntegerConverter;
 @SuppressWarnings("serial")
 public class NumberConverter extends StringToIntegerConverter {
 	private String numberFormatPattern;
-	private boolean useGrouping = true;
+	private boolean useGrouping;
 	private DecimalFormatSymbols decimalFormatSymbols;
+
+	public NumberConverter() {
+		this.numberFormatPattern = getDefaultFormat();
+		this.decimalFormatSymbols = getDefaultFormatSymbols();
+		this.useGrouping = getDefaultUseGrouping();
+	}
+
+	/**
+	 * Returns the default value for use grouping.
+	 * 
+	 * @return
+	 */
+	protected boolean getDefaultUseGrouping() {
+		return true;
+	}
+
+	/**
+	 * Returns the default value for format symbols.
+	 * 
+	 * @return
+	 */
+	protected DecimalFormatSymbols getDefaultFormatSymbols() {
+		return new DecimalFormatSymbols();
+	}
+
+	/**
+	 * Returns the default value for default format.
+	 * 
+	 * @return
+	 */
+	protected String getDefaultFormat() {
+		return "##,##0";
+	}
 
 	/**
 	 * Sets the number format pattern that should be used to format the number.
@@ -35,13 +68,7 @@ public class NumberConverter extends StringToIntegerConverter {
 	 * @param numberFormatPattern
 	 *            the numberFormatPattern to set
 	 */
-	public void setNumberFormatPattern(String numberFormatPattern) {
-
-		// cut of decimal point
-		if (numberFormatPattern.contains(".")) {
-			numberFormatPattern = numberFormatPattern.substring(0,
-					numberFormatPattern.indexOf("."));
-		}
+	protected void setNumberFormatPattern(String numberFormatPattern) {
 		this.numberFormatPattern = numberFormatPattern;
 	}
 
@@ -55,6 +82,24 @@ public class NumberConverter extends StringToIntegerConverter {
 	public void setDecimalFormatSymbols(
 			DecimalFormatSymbols decimalFormatSymbols) {
 		this.decimalFormatSymbols = decimalFormatSymbols;
+	}
+
+	/**
+	 * Returns the currently used number format pattern.
+	 * 
+	 * @return
+	 */
+	public String getNumberFormatPattern() {
+		return numberFormatPattern;
+	}
+
+	/**
+	 * Returns the currently used format symbols.
+	 * 
+	 * @return
+	 */
+	public DecimalFormatSymbols getDecimalFormatSymbols() {
+		return decimalFormatSymbols;
 	}
 
 	/**
@@ -89,9 +134,8 @@ public class NumberConverter extends StringToIntegerConverter {
 				result = new DecimalFormat(numberFormatPattern,
 						new DecimalFormatSymbols(locale));
 			}
-
-			result.setRoundingMode(RoundingMode.HALF_EVEN);
 			result.setParseIntegerOnly(true);
+			result.setRoundingMode(RoundingMode.HALF_EVEN);
 		} else {
 			result = NumberFormat.getIntegerInstance(locale);
 		}
@@ -100,4 +144,5 @@ public class NumberConverter extends StringToIntegerConverter {
 
 		return result;
 	}
+
 }

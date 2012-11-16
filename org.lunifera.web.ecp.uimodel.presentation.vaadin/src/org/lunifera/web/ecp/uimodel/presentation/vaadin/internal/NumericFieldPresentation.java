@@ -35,7 +35,6 @@ public class NumericFieldPresentation extends AbstractFieldPresenter {
 	 * @param editpart
 	 *            The editpart of that presenter
 	 */
-	@SuppressWarnings("restriction")
 	public NumericFieldPresentation(IUiElementEditpart editpart) {
 		super((IUiNumericFieldEditpart) editpart);
 		this.yNumericField = (YUiNumericField) editpart.getModel();
@@ -74,14 +73,11 @@ public class NumericFieldPresentation extends AbstractFieldPresenter {
 			YNumericDatatype datatype = yNumericField.getDatatype();
 			if (datatype != null) {
 				numberField.setUseGrouping(datatype.isGrouping());
-				numberField.setUseGrouping(datatype.isMarkNegative());
-
-				if (datatype.getFormatPattern() != null
-						&& !datatype.getFormatPattern().equals("")) {
-					numberField.setNumberFormatPattern(datatype
-							.getFormatPattern());
-				}
+				numberField.setMarkNegative(datatype.isMarkNegative());
 			}
+			
+			// applies the input properties
+			Util.applyInputProperties(numberField, yNumericField);
 
 		}
 		return componentBase;

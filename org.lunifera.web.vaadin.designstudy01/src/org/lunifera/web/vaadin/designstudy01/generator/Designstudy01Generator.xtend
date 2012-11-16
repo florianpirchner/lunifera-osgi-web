@@ -115,7 +115,7 @@ class Designstudy01Generator implements IGenerator {
 					if(field instanceof UiTextField){
 						// datadescription
 						val uiTextField = field as UiTextField
-						val yDatadesc = dtFactory.createYTextDDesc
+						val yDatadesc = dtFactory.createYDatadescription
 						yDatadesc.label = uiTextField.caption
 						
 						// field

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.lunifera.web.vaadin.components.converter;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -24,9 +25,59 @@ import com.vaadin.data.util.converter.StringToDoubleConverter;
  */
 @SuppressWarnings("serial")
 public class DecimalConverter extends StringToDoubleConverter {
+	private boolean integerInstance;
 	private String numberFormatPattern;
-	private boolean useGrouping = true;
+	private boolean useGrouping;
 	private DecimalFormatSymbols decimalFormatSymbols;
+	private int precision;
+
+	public DecimalConverter() {
+		this(false);
+	}
+
+	public DecimalConverter(boolean integerInstance) {
+		this.integerInstance = integerInstance;
+		this.numberFormatPattern = getDefaultFormat();
+		this.decimalFormatSymbols = getDefaultFormatSymbols();
+		this.precision = getDefaultPrecision();
+		this.useGrouping = getDefaultUseGrouping();
+	}
+
+	/**
+	 * Returns the default value for use grouping.
+	 * 
+	 * @return
+	 */
+	protected boolean getDefaultUseGrouping() {
+		return true;
+	}
+
+	/**
+	 * Returns the default value for precision.
+	 * 
+	 * @return
+	 */
+	protected int getDefaultPrecision() {
+		return 2;
+	}
+
+	/**
+	 * Returns the default value for format symbols.
+	 * 
+	 * @return
+	 */
+	protected DecimalFormatSymbols getDefaultFormatSymbols() {
+		return new DecimalFormatSymbols();
+	}
+
+	/**
+	 * Returns the default value for default format.
+	 * 
+	 * @return
+	 */
+	protected String getDefaultFormat() {
+		return "##,##0.00";
+	}
 
 	/**
 	 * Sets the number format pattern that should be used to format the number.
@@ -34,7 +85,7 @@ public class DecimalConverter extends StringToDoubleConverter {
 	 * @param numberFormatPattern
 	 *            the numberFormatPattern to set
 	 */
-	public void setNumberFormatPattern(String numberFormatPattern) {
+	protected void setNumberFormatPattern(String numberFormatPattern) {
 		this.numberFormatPattern = numberFormatPattern;
 	}
 
@@ -48,6 +99,24 @@ public class DecimalConverter extends StringToDoubleConverter {
 	public void setDecimalFormatSymbols(
 			DecimalFormatSymbols decimalFormatSymbols) {
 		this.decimalFormatSymbols = decimalFormatSymbols;
+	}
+
+	/**
+	 * Returns the currently used number format pattern.
+	 * 
+	 * @return
+	 */
+	public String getNumberFormatPattern() {
+		return numberFormatPattern;
+	}
+
+	/**
+	 * Returns the currently used format symbols.
+	 * 
+	 * @return
+	 */
+	public DecimalFormatSymbols getDecimalFormatSymbols() {
+		return decimalFormatSymbols;
 	}
 
 	/**
@@ -68,6 +137,42 @@ public class DecimalConverter extends StringToDoubleConverter {
 		this.useGrouping = useGrouping;
 	}
 
+	/**
+	 * Returns the precision of that decimal field.
+	 * 
+	 * @return
+	 */
+	public int getPrecision() {
+		return precision;
+	}
+
+	/**
+	 * Sets the precision of that decimal field.
+	 * 
+	 * @param precision
+	 */
+	public void setPrecision(int precision) {
+		this.precision = precision;
+
+		updateNumberFormat();
+	}
+
+	/**
+	 * Sets the number format pattern to be used for formatting.
+	 */
+	protected void updateNumberFormat() {
+		String format = "##,##0";
+
+		if (precision > 0) {
+			format = format.concat(".");
+		}
+		for (int i = 0; i < precision; i++) {
+			format = format.concat("0");
+		}
+
+		setNumberFormatPattern(format);
+	}
+
 	protected NumberFormat getFormat(Locale locale) {
 		if (locale == null) {
 			locale = Locale.getDefault();
@@ -82,12 +187,22 @@ public class DecimalConverter extends StringToDoubleConverter {
 				result = new DecimalFormat(numberFormatPattern,
 						new DecimalFormatSymbols(locale));
 			}
+
+			if (integerInstance) {
+				result.setParseIntegerOnly(true);
+				result.setRoundingMode(RoundingMode.HALF_EVEN);
+			}
 		} else {
-			result = NumberFormat.getNumberInstance(locale);
+			if (integerInstance) {
+				result = NumberFormat.getIntegerInstance(locale);
+			} else {
+				result = NumberFormat.getNumberInstance(locale);
+			}
 		}
 
 		result.setGroupingUsed(useGrouping);
 
 		return result;
 	}
+
 }

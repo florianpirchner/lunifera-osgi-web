@@ -13,7 +13,22 @@ package org.lunifera.web.ecp.uimodel.presentation.vaadin.internal;
 import org.eclipse.emf.ecp.ui.model.core.datatypes.YDatadescription;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiInput;
 
+import com.vaadin.ui.Field;
+
 public class Util {
+
+	/**
+	 * Applies the input properties to the field.
+	 * 
+	 * @param field
+	 * @param yInput
+	 */
+	public static void applyInputProperties(Field<?> field, YUiInput yInput) {
+		field.setRequired(yInput.isRequired());
+		field.setReadOnly(yInput.isReadonly());
+		field.setEnabled(yInput.isEnabled());
+		field.setVisible(yInput.isVisible());
+	}
 
 	/**
 	 * Returns the css class.

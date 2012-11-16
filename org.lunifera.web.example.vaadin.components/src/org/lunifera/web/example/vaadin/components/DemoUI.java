@@ -54,7 +54,7 @@ public class DemoUI extends UI {
 		sheet.setSizeFull();
 		addComponent(sheet);
 		sheet.addTab(createDecimalTab(), "Decimals");
-		sheet.addTab(createNumericTab(), "Numeric");
+		// sheet.addTab(createNumericTab(), "Numeric");
 	}
 
 	@SuppressWarnings("serial")
@@ -69,11 +69,13 @@ public class DemoUI extends UI {
 		/*
 		 * Decimal Field 1
 		 */
-		// Add Decimal Field
 		DecimalField field1 = new DecimalField("Decimal Field 1");
 		field1.setImmediate(true);
 		field1.setBuffered(false);
-		field1.setNumberFormatPattern("000,000.000000");
+		field1.setPrecision(4);
+		field1.setMarkNegative(true);
+		field1.setUseGrouping(true);
+
 		ObjectProperty<Double> prop1 = new ObjectProperty<Double>(new Double(
 				1234567890.123456));
 		field1.setPropertyDataSource(prop1);
@@ -90,211 +92,208 @@ public class DemoUI extends UI {
 		line1.setContentMode(ContentMode.HTML);
 		main.addComponent(line1, "top:80.0px;left:40.0px;");
 
-		/*
-		 * Decimal Field 2
-		 */
-
-		// Add Decimal Field
-		DecimalField field2 = new DecimalField("Decimal Field 2");
-		field2.setImmediate(true);
-		field2.setBuffered(false);
-		field2.setNumberFormatPattern("##,##0.00");
-		ObjectProperty<Double> prop2 = new ObjectProperty<Double>(new Double(
-				1234567890.123456));
-		field2.setPropertyDataSource(prop2);
-		field2.addValidator(new NumberBoundsValidator("Min = -3 | Max = 100")
-				.lower(100).greaterEqual(-3));
-		main.addComponent(field2, "top:110.0px;left:40.0px;");
-
-		// Add Description (called Settings)
-		Label desc2 = new Label(CAPTION_HELP_2);
-		desc2.setContentMode(ContentMode.HTML);
-		desc2.setWidth("300px");
-		main.addComponent(desc2, "top:110.0px;left:200.0px;");
-
-		// Add horizontal Line
-		Label line2 = new Label("<hr>");
-		line2.setContentMode(ContentMode.HTML);
-		main.addComponent(line2, "top:220.0px;left:40.0px;");
-
-		/*
-		 * Decimal Field 3
-		 */
-
-		// Add DecimalField
-		DecimalField field3 = new DecimalField("Decimal Field 3");
-		field3.setImmediate(true);
-		field3.setBuffered(false);
-		field3.setNumberFormatPattern("##,##0.00");
-		field3.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-		ObjectProperty<Double> prop3 = new ObjectProperty<Double>(new Double(
-				1234567890.123456));
-		field3.setPropertyDataSource(prop3);
-		field3.addValidator(new NumberBoundsValidator("Equals 8 validator")
-				.equal(8));
-		main.addComponent(field3, "top:250.0px;left:40.0px;");
-
-		// Add Description (called Settings)
-		Label desc3 = new Label(CAPTION_HELP_3);
-		desc3.setContentMode(ContentMode.HTML);
-		desc3.setWidth("300px");
-		main.addComponent(desc3, "top:250.0px;left:200.0px;");
-
-		// Add horizontal Line
-		Label line3 = new Label("<hr>");
-		line3.setContentMode(ContentMode.HTML);
-		main.addComponent(line3, "top:320.0px;left:40.0px;");
-
-		/*
-		 * Decimal Field 4
-		 */
-
-		// Add DecimalField
-		final DecimalField field4 = new DecimalField("Decimal Field 4");
-		field4.setImmediate(true);
-		field4.setBuffered(false);
-		field4.setNumberFormatPattern("##,##0.00");
-		field4.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.GERMAN));
-		ObjectProperty<Double> prop4 = new ObjectProperty<Double>(new Double(
-				1234567890.123456));
-		field4.setPropertyDataSource(prop4);
-		main.addComponent(field4, "top:370.0px;left:40.0px;");
-
-		// Add CombpBox
-		ComboBox box4 = new ComboBox();
-		box4.setImmediate(true);
-		box4.addItem("de_DE");
-		box4.addItem("us_US");
-		box4.setValue("de_DE");
-		main.addComponent(box4, "top:370.0px;left:200.0px;");
-
-		// Add Description (called Settings)
-		final Label desc4 = new Label(String.format(CAPTION_HELP_4,
-				box4.getValue()));
-		desc4.setContentMode(ContentMode.HTML);
-		desc4.setWidth("300px");
-		main.addComponent(desc4, "top:400.0px;left:200.0px;");
-
-		// Add horizontal Line
-		Label line4 = new Label("<hr>");
-		line4.setContentMode(ContentMode.HTML);
-		main.addComponent(line4, "top:480.0px;left:40.0px;");
-
-		// Listener for ComboBox
-		box4.addValueChangeListener(new Property.ValueChangeListener() {
-			@Override
-			public void valueChange(Property.ValueChangeEvent event) {
-				String value = (String) event.getProperty().getValue();
-				if (value.equals("de_DE")) {
-					field4.setDecimalFormatSymbols(new DecimalFormatSymbols(
-							Locale.GERMAN));
-				} else {
-					field4.setDecimalFormatSymbols(new DecimalFormatSymbols(
-							Locale.US));
-				}
-				desc4.setValue(String.format(CAPTION_HELP_4, value));
-			}
-		});
-
-		/*
-		 * DecimalField 5
-		 */
-		// Add DecimalField
-		final DecimalField field5 = new DecimalField("Decimal Field 5");
-		field5.setImmediate(true);
-		field5.setBuffered(false);
-		field5.setNumberFormatPattern("##,##0.00");
-		DecimalFormatSymbols symbols5 = new DecimalFormatSymbols(Locale.GERMAN);
-		symbols5.setGroupingSeparator(':');
-		field5.setDecimalFormatSymbols(symbols5);
-		ObjectProperty<Double> prop5 = new ObjectProperty<Double>(new Double(
-				1234567890.123456));
-		field5.setPropertyDataSource(prop5);
-		prop5.setValue(123456789.998877d);
-		main.addComponent(field5, "top:510.0px;left:40.0px;");
-
-		// Add ComboBox
-		ComboBox box5 = new ComboBox();
-		box5.setImmediate(true);
-		box5.addItem("de_DE");
-		box5.addItem("us_US");
-		box5.setValue("de_DE");
-		main.addComponent(box5, "top:510.0px;left:200.0px;");
-
-		// Add Description (called Settings)
-		final Label desc5 = new Label(String.format(CAPTION_HELP_5,
-				box5.getValue()));
-		desc5.setContentMode(ContentMode.HTML);
-		desc5.setWidth("300px");
-		main.addComponent(desc5, "top:540.0px;left:200.0px;");
-
-		// Add horizontal Line
-		Label line5 = new Label("<hr>");
-		line5.setContentMode(ContentMode.HTML);
-		main.addComponent(line5, "top:640.0px;left:40.0px;");
-
-		// Listener for ComboBox
-		box5.addValueChangeListener(new Property.ValueChangeListener() {
-			@Override
-			public void valueChange(Property.ValueChangeEvent event) {
-				String value = (String) event.getProperty().getValue();
-				// set the decimalFormaSymbols! Setting the Locale is not enough
-				// since the DecimalField cached the original symbols
-				if (value.equals("de_DE")) {
-					DecimalFormatSymbols symbols = new DecimalFormatSymbols(
-							Locale.GERMAN);
-					symbols.setGroupingSeparator(':');
-					field5.setDecimalFormatSymbols(symbols);
-				} else {
-					DecimalFormatSymbols symbols = new DecimalFormatSymbols(
-							Locale.US);
-					symbols.setGroupingSeparator(':');
-					field5.setDecimalFormatSymbols(symbols);
-				}
-				desc5.setValue(String.format(CAPTION_HELP_5, value));
-			}
-		});
-
-		// Add TextField
-		ObjectProperty<Double> prop7 = new ObjectProperty<Double>(new Double(
-				1234567890.123456));
-		TextField field7 = new TextField("Text Field 1");
-		field7.setImmediate(true);
-		field7.setBuffered(false);
-		field7.setConverter(Double.class);
-		field7.setPropertyDataSource(prop7);
-		main.addComponent(field7, "top:670.0px;left:40.0px;");
-
-		// Add Description (called Settings)
-		final Label desc7 = new Label(String.format(CAPTION_HELP_6));
-		desc7.setContentMode(ContentMode.HTML);
-		desc7.setWidth("300px");
-		main.addComponent(desc7, "top:670.0px;left:200.0px;");
-
-		// Add horizontal Line
-		Label line8 = new Label("<hr>");
-		line8.setContentMode(ContentMode.HTML);
-		main.addComponent(line8, "top:730.0px;left:40.0px;");
-
-		/*
-		 * Decimal Field 8
-		 */
-		DecimalField field8 = new DecimalField("Decimal Field 8");
-		field8.setImmediate(true);
-		field8.setBuffered(false);
-		field8.setUseGrouping(false);
-		field8.setNumberFormatPattern("##,##0.00");
-		field8.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
-		ObjectProperty<Double> prop8 = new ObjectProperty<Double>(new Double(
-				1234567890.123456));
-		field8.setPropertyDataSource(prop8);
-		main.addComponent(field8, "top:760.0px;left:40.0px;");
-
-		// Add Description (called Settings)
-		Label desc8 = new Label(CAPTION_HELP_8);
-		desc8.setContentMode(ContentMode.HTML);
-		desc8.setWidth("300px");
-		main.addComponent(desc8, "top:760.0px;left:200.0px;");
+		// /*
+		// * Decimal Field 2
+		// */
+		//
+		// // Add Decimal Field
+		// DecimalField field2 = new DecimalField("Decimal Field 2");
+		// field2.setImmediate(true);
+		// field2.setBuffered(false);
+		// ObjectProperty<Double> prop2 = new ObjectProperty<Double>(new Double(
+		// 1234567890.123456));
+		// field2.setPropertyDataSource(prop2);
+		// field2.addValidator(new NumberBoundsValidator("Min = -3 | Max = 100")
+		// .lower(100).greaterEqual(-3));
+		// main.addComponent(field2, "top:110.0px;left:40.0px;");
+		//
+		// // Add Description (called Settings)
+		// Label desc2 = new Label(CAPTION_HELP_2);
+		// desc2.setContentMode(ContentMode.HTML);
+		// desc2.setWidth("300px");
+		// main.addComponent(desc2, "top:110.0px;left:200.0px;");
+		//
+		// // Add horizontal Line
+		// Label line2 = new Label("<hr>");
+		// line2.setContentMode(ContentMode.HTML);
+		// main.addComponent(line2, "top:220.0px;left:40.0px;");
+		//
+		// /*
+		// * Decimal Field 3
+		// */
+		//
+		// // Add DecimalField
+		// DecimalField field3 = new DecimalField("Decimal Field 3");
+		// field3.setImmediate(true);
+		// field3.setBuffered(false);
+		// field3.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+		// ObjectProperty<Double> prop3 = new ObjectProperty<Double>(new Double(
+		// 1234567890.123456));
+		// field3.setPropertyDataSource(prop3);
+		// field3.addValidator(new NumberBoundsValidator("Equals 8 validator")
+		// .equal(8));
+		// main.addComponent(field3, "top:250.0px;left:40.0px;");
+		//
+		// // Add Description (called Settings)
+		// Label desc3 = new Label(CAPTION_HELP_3);
+		// desc3.setContentMode(ContentMode.HTML);
+		// desc3.setWidth("300px");
+		// main.addComponent(desc3, "top:250.0px;left:200.0px;");
+		//
+		// // Add horizontal Line
+		// Label line3 = new Label("<hr>");
+		// line3.setContentMode(ContentMode.HTML);
+		// main.addComponent(line3, "top:320.0px;left:40.0px;");
+		//
+		// /*
+		// * Decimal Field 4
+		// */
+		//
+		// // Add DecimalField
+		// final DecimalField field4 = new DecimalField("Decimal Field 4");
+		// field4.setImmediate(true);
+		// field4.setBuffered(false);
+		// field4.setDecimalFormatSymbols(new
+		// DecimalFormatSymbols(Locale.GERMAN));
+		// ObjectProperty<Double> prop4 = new ObjectProperty<Double>(new Double(
+		// 1234567890.123456));
+		// field4.setPropertyDataSource(prop4);
+		// main.addComponent(field4, "top:370.0px;left:40.0px;");
+		//
+		// // Add CombpBox
+		// ComboBox box4 = new ComboBox();
+		// box4.setImmediate(true);
+		// box4.addItem("de_DE");
+		// box4.addItem("us_US");
+		// box4.setValue("de_DE");
+		// main.addComponent(box4, "top:370.0px;left:200.0px;");
+		//
+		// // Add Description (called Settings)
+		// final Label desc4 = new Label(String.format(CAPTION_HELP_4,
+		// box4.getValue()));
+		// desc4.setContentMode(ContentMode.HTML);
+		// desc4.setWidth("300px");
+		// main.addComponent(desc4, "top:400.0px;left:200.0px;");
+		//
+		// // Add horizontal Line
+		// Label line4 = new Label("<hr>");
+		// line4.setContentMode(ContentMode.HTML);
+		// main.addComponent(line4, "top:480.0px;left:40.0px;");
+		//
+		// // Listener for ComboBox
+		// box4.addValueChangeListener(new Property.ValueChangeListener() {
+		// @Override
+		// public void valueChange(Property.ValueChangeEvent event) {
+		// String value = (String) event.getProperty().getValue();
+		// if (value.equals("de_DE")) {
+		// field4.setDecimalFormatSymbols(new DecimalFormatSymbols(
+		// Locale.GERMAN));
+		// } else {
+		// field4.setDecimalFormatSymbols(new DecimalFormatSymbols(
+		// Locale.US));
+		// }
+		// desc4.setValue(String.format(CAPTION_HELP_4, value));
+		// }
+		// });
+		//
+		// /*
+		// * DecimalField 5
+		// */
+		// // Add DecimalField
+		// final DecimalField field5 = new DecimalField("Decimal Field 5");
+		// field5.setImmediate(true);
+		// field5.setBuffered(false);
+		// DecimalFormatSymbols symbols5 = new
+		// DecimalFormatSymbols(Locale.GERMAN);
+		// symbols5.setGroupingSeparator(':');
+		// field5.setDecimalFormatSymbols(symbols5);
+		// ObjectProperty<Double> prop5 = new ObjectProperty<Double>(new Double(
+		// 1234567890.123456));
+		// field5.setPropertyDataSource(prop5);
+		// prop5.setValue(123456789.998877d);
+		// main.addComponent(field5, "top:510.0px;left:40.0px;");
+		//
+		// // Add ComboBox
+		// ComboBox box5 = new ComboBox();
+		// box5.setImmediate(true);
+		// box5.addItem("de_DE");
+		// box5.addItem("us_US");
+		// box5.setValue("de_DE");
+		// main.addComponent(box5, "top:510.0px;left:200.0px;");
+		//
+		// // Add Description (called Settings)
+		// final Label desc5 = new Label(String.format(CAPTION_HELP_5,
+		// box5.getValue()));
+		// desc5.setContentMode(ContentMode.HTML);
+		// desc5.setWidth("300px");
+		// main.addComponent(desc5, "top:540.0px;left:200.0px;");
+		//
+		// // Add horizontal Line
+		// Label line5 = new Label("<hr>");
+		// line5.setContentMode(ContentMode.HTML);
+		// main.addComponent(line5, "top:640.0px;left:40.0px;");
+		//
+		// // Listener for ComboBox
+		// box5.addValueChangeListener(new Property.ValueChangeListener() {
+		// @Override
+		// public void valueChange(Property.ValueChangeEvent event) {
+		// String value = (String) event.getProperty().getValue();
+		// // set the decimalFormaSymbols! Setting the Locale is not enough
+		// // since the DecimalField cached the original symbols
+		// if (value.equals("de_DE")) {
+		// DecimalFormatSymbols symbols = new DecimalFormatSymbols(
+		// Locale.GERMAN);
+		// symbols.setGroupingSeparator(':');
+		// field5.setDecimalFormatSymbols(symbols);
+		// } else {
+		// DecimalFormatSymbols symbols = new DecimalFormatSymbols(
+		// Locale.US);
+		// symbols.setGroupingSeparator(':');
+		// field5.setDecimalFormatSymbols(symbols);
+		// }
+		// desc5.setValue(String.format(CAPTION_HELP_5, value));
+		// }
+		// });
+		//
+		// // Add TextField
+		// ObjectProperty<Double> prop7 = new ObjectProperty<Double>(new Double(
+		// 1234567890.123456));
+		// TextField field7 = new TextField("Text Field 1");
+		// field7.setImmediate(true);
+		// field7.setBuffered(false);
+		// field7.setConverter(Double.class);
+		// field7.setPropertyDataSource(prop7);
+		// main.addComponent(field7, "top:670.0px;left:40.0px;");
+		//
+		// // Add Description (called Settings)
+		// final Label desc7 = new Label(String.format(CAPTION_HELP_6));
+		// desc7.setContentMode(ContentMode.HTML);
+		// desc7.setWidth("300px");
+		// main.addComponent(desc7, "top:670.0px;left:200.0px;");
+		//
+		// // Add horizontal Line
+		// Label line8 = new Label("<hr>");
+		// line8.setContentMode(ContentMode.HTML);
+		// main.addComponent(line8, "top:730.0px;left:40.0px;");
+		//
+		// /*
+		// * Decimal Field 8
+		// */
+		// DecimalField field8 = new DecimalField("Decimal Field 8");
+		// field8.setImmediate(true);
+		// field8.setBuffered(false);
+		// field8.setUseGrouping(false);
+		// field8.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
+		// ObjectProperty<Double> prop8 = new ObjectProperty<Double>(new Double(
+		// 1234567890.123456));
+		// field8.setPropertyDataSource(prop8);
+		// main.addComponent(field8, "top:760.0px;left:40.0px;");
+		//
+		// // Add Description (called Settings)
+		// Label desc8 = new Label(CAPTION_HELP_8);
+		// desc8.setContentMode(ContentMode.HTML);
+		// desc8.setWidth("300px");
+		// main.addComponent(desc8, "top:760.0px;left:200.0px;");
 
 		return main;
 	}
@@ -315,7 +314,6 @@ public class DemoUI extends UI {
 		NumberField field1 = new NumberField("Number Field 1");
 		field1.setImmediate(true);
 		field1.setBuffered(false);
-		field1.setNumberFormatPattern("000,000");
 		ObjectProperty<Integer> prop1 = new ObjectProperty<Integer>(
 				new Integer(1234567890));
 		field1.setPropertyDataSource(prop1);
@@ -340,7 +338,6 @@ public class DemoUI extends UI {
 		NumberField field2 = new NumberField("Number Field 2");
 		field2.setImmediate(true);
 		field2.setBuffered(false);
-		field2.setNumberFormatPattern("##,##0");
 		ObjectProperty<Integer> prop2 = new ObjectProperty<Integer>(
 				new Integer(1234567890));
 		field2.setPropertyDataSource(prop2);
@@ -366,7 +363,6 @@ public class DemoUI extends UI {
 		NumberField field3 = new NumberField("Number Field 3");
 		field3.setImmediate(true);
 		field3.setBuffered(false);
-		field3.setNumberFormatPattern("##,##0");
 		field3.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
 		ObjectProperty<Integer> prop3 = new ObjectProperty<Integer>(
 				new Integer(1234567890));
@@ -394,7 +390,6 @@ public class DemoUI extends UI {
 		final NumberField field4 = new NumberField("Number Field 4");
 		field4.setImmediate(true);
 		field4.setBuffered(false);
-		field4.setNumberFormatPattern("##,##0");
 		field4.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.GERMAN));
 		ObjectProperty<Integer> prop4 = new ObjectProperty<Integer>(
 				new Integer(1234567890));
@@ -444,7 +439,6 @@ public class DemoUI extends UI {
 		final NumberField field5 = new NumberField("Number Field 5");
 		field5.setImmediate(true);
 		field5.setBuffered(false);
-		field5.setNumberFormatPattern("##,##0.00");
 		DecimalFormatSymbols symbols5 = new DecimalFormatSymbols(Locale.GERMAN);
 		symbols5.setGroupingSeparator(':');
 		field5.setDecimalFormatSymbols(symbols5);
@@ -524,7 +518,6 @@ public class DemoUI extends UI {
 		field8.setImmediate(true);
 		field8.setBuffered(false);
 		field8.setUseGrouping(false);
-		field8.setNumberFormatPattern("##,##0");
 		field8.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
 		ObjectProperty<Integer> prop8 = new ObjectProperty<Integer>(
 				new Integer(1234567890));

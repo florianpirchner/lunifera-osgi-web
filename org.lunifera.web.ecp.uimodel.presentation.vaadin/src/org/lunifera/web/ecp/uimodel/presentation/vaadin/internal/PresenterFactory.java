@@ -14,8 +14,10 @@ import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiElementEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.IUiViewEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.context.IViewContext;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiCheckboxEditpart;
+import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiDecimalFieldEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiGridLayoutEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiLabelEditpart;
+import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiNumericFieldEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTableEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextAreaEditpart;
 import org.eclipse.emf.ecp.ui.uimodel.core.editparts.extension.IUiTextFieldEditpart;
@@ -54,6 +56,10 @@ public class PresenterFactory implements IPresentationFactory {
 			presentation = (A) new TextAreaPresentation(editpart);
 		} else if (editpart instanceof IUiCheckboxEditpart) {
 			presentation = (A) new CheckBoxPresentation(editpart);
+		} else if (editpart instanceof IUiDecimalFieldEditpart) {
+			presentation = (A) new DecimalFieldPresentation(editpart);
+		} else if (editpart instanceof IUiNumericFieldEditpart) {
+			presentation = (A) new NumericFieldPresentation(editpart);
 		}
 		if (presentation == null) {
 			throw new IllegalArgumentException(String.format(

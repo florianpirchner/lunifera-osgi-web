@@ -14,6 +14,7 @@ package org.lunifera.web.vaadin.components.fields;
 
 import java.text.DecimalFormatSymbols;
 
+import org.lunifera.web.vaadin.components.converter.DecimalConverter;
 import org.lunifera.web.vaadin.components.converter.NumberConverter;
 
 /**
@@ -22,7 +23,9 @@ import org.lunifera.web.vaadin.components.converter.NumberConverter;
 @SuppressWarnings("serial")
 public class NumberField extends TextField {
 
+	private static final String NEGATIVE_VALUE = "lun-negative-value";
 	private final NumberConverter converter;
+	private boolean markNegative;
 
 	public NumberField() {
 		this(null);
@@ -53,18 +56,6 @@ public class NumberField extends TextField {
 	}
 
 	/**
-	 * Sets the number format to be used.
-	 * 
-	 * @param numberFormatPattern
-	 *            the numberFormat to set
-	 */
-	public void setNumberFormatPattern(String numberFormatPattern) {
-		converter.setNumberFormatPattern(numberFormatPattern);
-
-		markAsDirty();
-	}
-
-	/**
 	 * Sets the Symbols which are used to Format.
 	 * 
 	 * @param decimalFormatSymbols
@@ -74,6 +65,15 @@ public class NumberField extends TextField {
 		converter.setDecimalFormatSymbols(decimalFormatSymbols);
 
 		markAsDirty();
+	}
+
+	/**
+	 * Returns the currently used decimal format symbols.
+	 * 
+	 * @return
+	 */
+	public DecimalFormatSymbols getDecimalFormatSymbols() {
+		return converter.getDecimalFormatSymbols();
 	}
 
 	/**
@@ -94,5 +94,61 @@ public class NumberField extends TextField {
 		converter.setUseGrouping(useGrouping);
 
 		markAsDirty();
+	}
+
+	/**
+	 * True, if negative values should become marked.
+	 * 
+	 * @param markNegative
+	 */
+	public void setMarkNegative(boolean markNegative) {
+		this.markNegative = markNegative;
+	}
+
+	/**
+	 * Returns true, if negative values should become marked.
+	 * 
+	 * @return
+	 */
+	public boolean isMarkNegative() {
+		return markNegative;
+	}
+
+	protected void setInternalValue(String newValue) {
+		super.setInternalValue(newValue);
+
+		handleNegative();
+	}
+
+	/**
+	 * Is called to handle the negative marker.
+	 */
+	protected void handleNegative() {
+		removeStyleName(NEGATIVE_VALUE);
+
+		if (!isMarkNegative()) {
+			return;
+		}
+
+		// try to find out if value is negative
+		if (getPropertyDataSource() == null || isBuffered() || isModified()) {
+			String value = getInternalValue();
+			try {
+				double result = converter.convertToModel(value, getLocale());
+				if (result < 0) {
+					addStyleName(NEGATIVE_VALUE);
+				}
+			} catch (Exception e) {
+				// nothing to do
+			}
+		} else {
+			Object value = getPropertyDataSource().getValue();
+			if (value != null) {
+				double result = (Double) value;
+				if (result < 0) {
+					addStyleName(NEGATIVE_VALUE);
+				}
+			}
+		}
 	}
 }

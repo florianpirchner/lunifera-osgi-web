@@ -15,7 +15,7 @@ package org.lunifera.web.vaadin.example.uimodelbridge;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.emf.ecp.ui.model.core.datatypes.YTextDDesc;
+import org.eclipse.emf.ecp.ui.model.core.datatypes.YDatadescription;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.YUiView;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayout;
 import org.eclipse.emf.ecp.ui.model.core.uimodel.extension.YUiGridLayoutCellStyle;
@@ -284,7 +284,7 @@ public class UiModelBridgeUI extends UI implements UI.CleanupListener,
 	protected YUiTextField newText(String label) {
 		YUiTextField field = factory.createTextField();
 		if (label != null) {
-			YTextDDesc dtd = factory.createTextDatadescription();
+			YDatadescription dtd = factory.createDatadescription();
 			field.setDatadescription(dtd);
 			dtd.setLabel(label);
 		}

@@ -67,6 +67,11 @@ public class TextFieldPresentation extends AbstractFieldPresenter {
 			if (Util.isLabelValid(yTextField.getDatadescription())) {
 				text.setCaption(Util.getLabel(yTextField.getDatadescription()));
 			}
+			
+			// applies the input properties
+			Util.applyInputProperties(text, yTextField);
+			
+			
 		}
 		return componentBase;
 	}

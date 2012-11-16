@@ -65,6 +65,9 @@ public class TablePresentation extends AbstractFieldPresenter {
 			if (Util.isLabelValid(yTable.getDatadescription())) {
 				table.setCaption(Util.getLabel(yTable.getDatadescription()));
 			}
+			
+			// applies the input properties
+			Util.applyInputProperties(table, yTable);
 		}
 		return componentBase;
 	}
